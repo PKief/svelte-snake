@@ -1,0 +1,14 @@
+@import '~svelte-material-ui/bare.css';
+@import 'material-icons/iconfont/material-icons.css';
+@import '../theme/dark/smui-theme';
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
