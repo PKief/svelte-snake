@@ -1,11 +1,10 @@
 import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { createPausableTimer } from '../utils';
 import { Food } from './food';
 import { Position } from './position';
 import { Snake } from './snake';
 import { gameState } from './stores';
-import { GameConfig, GameField } from './types';
+import { Direction, GameConfig, GameField } from './types';
 
 export class Game {
   config: GameConfig;
@@ -48,42 +47,6 @@ export class Game {
       gameOver: false,
     }));
     this.generateRandomFoodPosition();
-
-    this.intervalSubscription = createPausableTimer(this.paused).subscribe(
-      () => {
-        this.snake.move();
-
-        const snakeHitsWall =
-          this.snake.head.x < 0 ||
-          this.snake.head.x >= this.config.gridSize ||
-          this.snake.head.y < 0 ||
-          this.snake.head.y >= this.config.gridSize;
-
-        const snakeBitesItself = this.snake.parts.some(
-          (part, index) =>
-            part.x === this.snake.head.x &&
-            part.y === this.snake.head.y &&
-            index > 0
-        );
-
-        if (snakeHitsWall || snakeBitesItself) {
-          this.endGame();
-          return;
-        }
-
-        const snakeHitsFood =
-          this.snake.head.x === this.food.position.x &&
-          this.snake.head.y === this.food.position.y;
-
-        if (snakeHitsFood) {
-          this.snake.eatFood();
-          this.updateScore(1);
-          this.generateRandomFoodPosition();
-        }
-
-        this.rerender();
-      }
-    );
   }
 
   pause(): void {
@@ -110,32 +73,140 @@ export class Game {
     this.start();
   }
 
-  render() {
+  getRenderingContet(fps: number) {
     const fieldWidth = this.ctx.canvas.width / this.config.gridSize;
     const fieldHeight = this.ctx.canvas.height / this.config.gridSize;
 
-    this.clearCanvas();
-    this.drawSnake(fieldWidth, fieldHeight);
+    const tickMovementX = fieldWidth / fps;
+    const tickMovementY = fieldHeight / fps;
+    let tickCount = 0;
+    let snakeDirection;
+    let snakeHeadPosition: Position;
+
+    return () => {
+      if (tickCount === 0) {
+        tickCount = fps;
+        snakeHeadPosition = { x: this.snake.head.x, y: this.snake.head.y };
+        snakeDirection = this.snake.direction;
+        this.moveSnake();
+      }
+      tickCount--;
+      this.clearCanvas();
+      this.render(
+        fieldWidth,
+        fieldHeight,
+        tickMovementX,
+        tickMovementY,
+        fps - tickCount,
+        snakeDirection,
+        snakeHeadPosition
+      );
+    };
   }
 
-  private drawSnake(fieldWidth: number, fieldHeight: number) {
-    this.ctx.fillStyle = 'red';
-    this.ctx.fillRect(
-      this.snake.head.x * fieldWidth,
-      this.snake.head.y * fieldHeight,
+  private render(
+    fieldWidth: number,
+    fieldHeight: number,
+    tickMovementX: number,
+    tickMovementY: number,
+    tickCount: number,
+    snakeDirection: Direction,
+    snakePosition: Position
+  ) {
+    this.drawSnake(
       fieldWidth,
-      fieldHeight
+      fieldHeight,
+      tickMovementX,
+      tickMovementY,
+      tickCount,
+      snakeDirection,
+      snakePosition
+    );
+  }
+
+  private drawSnake(
+    fieldWidth: number,
+    fieldHeight: number,
+    tickMovementX: number,
+    tickMovementY: number,
+    tickCount: number,
+    snakeDirection: Direction,
+    snakePosition: Position
+  ) {
+    this.ctx.fillStyle = 'red';
+    const xCurrentPosition = snakePosition.x * fieldWidth;
+    const yCurrentPosition = snakePosition.y * fieldWidth;
+    let x;
+    let y;
+    switch (snakeDirection) {
+      case 'right': {
+        x = xCurrentPosition + tickMovementX * tickCount;
+        y = yCurrentPosition;
+        break;
+      }
+      case 'down': {
+        x = xCurrentPosition;
+        y = yCurrentPosition + tickMovementY * tickCount;
+        break;
+      }
+      case 'left': {
+        x = xCurrentPosition - tickMovementX * tickCount;
+        y = yCurrentPosition;
+        break;
+      }
+      case 'up': {
+        x = xCurrentPosition;
+        y = yCurrentPosition - tickMovementY * tickCount;
+        break;
+      }
+    }
+    this.ctx.fillRect(x, y, fieldWidth, fieldHeight);
+    this.ctx.fillText(
+      `xS: ${this.snake.head.x} yS: ${this.snake.head.y}`,
+      x,
+      y
     );
 
-    this.snake.parts.forEach((part) => {
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect(
-        part.x * fieldWidth,
-        part.y * fieldHeight,
-        fieldWidth,
-        fieldHeight
-      );
-    });
+    // this.snake.parts.forEach((part) => {
+    //   this.ctx.fillStyle = 'red';
+    //   this.ctx.fillRect(
+    //     part.x * fieldWidth,
+    //     part.y * fieldHeight,
+    //     fieldWidth,
+    //     fieldHeight
+    //   );
+    // });
+  }
+
+  private moveSnake() {
+    this.snake.move();
+
+    const snakeHitsWall =
+      this.snake.head.x < 0 ||
+      this.snake.head.x >= this.config.gridSize ||
+      this.snake.head.y < 0 ||
+      this.snake.head.y >= this.config.gridSize;
+
+    const snakeBitesItself = this.snake.parts.some(
+      (part, index) =>
+        part.x === this.snake.head.x &&
+        part.y === this.snake.head.y &&
+        index > 0
+    );
+
+    if (snakeHitsWall || snakeBitesItself) {
+      this.endGame();
+    }
+
+    const snakeHitsFood =
+      this.snake.head.x === this.food.position.x &&
+      this.snake.head.y === this.food.position.y;
+
+    if (snakeHitsFood) {
+      this.snake.eatFood();
+      this.updateScore(1);
+      this.generateRandomFoodPosition();
+    }
   }
 
   private clearCanvas() {

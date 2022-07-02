@@ -12,11 +12,23 @@
       ctx,
     });
 
+    const fps = 30;
+    const fpsInterval = 1000 / fps;
+    let then = window.performance.now();
+    const renderContext = game.getRenderingContet(fps);
+
     let frame = requestAnimationFrame(loop);
 
     function loop(t) {
       frame = requestAnimationFrame(loop);
-      game.render();
+
+      const elapsed = t - then;
+
+      // if enough time has elapsed, draw the next frame
+      if (elapsed > fpsInterval) {
+        then = t - (elapsed % fpsInterval);
+        renderContext();
+      }
     }
 
     game.start();
