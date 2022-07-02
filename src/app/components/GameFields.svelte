@@ -13,7 +13,7 @@
     });
 
     const fps = 30;
-    const fpsInterval = 1000 / fps;
+    const fpsInterval = 500 / fps;
     let then = window.performance.now();
     const renderContext = game.getRenderingContet(fps);
 

@@ -122,6 +122,18 @@ export class Game {
       snakeDirection,
       snakeParts
     );
+
+    this.drawFood(fieldWidth, fieldHeight);
+  }
+
+  private drawFood(fieldWidth: number, fieldHeight: number) {
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillRect(
+      this.food.position.x * fieldWidth,
+      this.food.position.y * fieldHeight,
+      fieldWidth,
+      fieldHeight
+    );
   }
 
   private drawSnake(
