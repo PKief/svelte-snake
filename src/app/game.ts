@@ -81,12 +81,12 @@ export class Game {
     const tickMovementY = fieldHeight / fps;
     let tickCount = 0;
     let snakeDirection;
-    let snakeHeadPosition: Position;
+    let snakeParts: Position[];
 
     return () => {
       if (tickCount === 0) {
         tickCount = fps;
-        snakeHeadPosition = { x: this.snake.head.x, y: this.snake.head.y };
+        snakeParts = this.snake.parts;
         snakeDirection = this.snake.direction;
         this.moveSnake();
       }
@@ -99,7 +99,7 @@ export class Game {
         tickMovementY,
         fps - tickCount,
         snakeDirection,
-        snakeHeadPosition
+        snakeParts
       );
     };
   }
@@ -111,7 +111,7 @@ export class Game {
     tickMovementY: number,
     tickCount: number,
     snakeDirection: Direction,
-    snakePosition: Position
+    snakeParts: Position[]
   ) {
     this.drawSnake(
       fieldWidth,
@@ -120,7 +120,7 @@ export class Game {
       tickMovementY,
       tickCount,
       snakeDirection,
-      snakePosition
+      snakeParts
     );
   }
 
@@ -131,11 +131,67 @@ export class Game {
     tickMovementY: number,
     tickCount: number,
     snakeDirection: Direction,
-    snakePosition: Position
+    snakeParts: Position[]
+  ) {
+    this.drawSnakePart(
+      snakeParts[0],
+      fieldWidth,
+      snakeDirection,
+      tickMovementX,
+      tickCount,
+      tickMovementY,
+      fieldHeight
+    );
+
+    // snakeParts.slice(1, snakeParts.length - 2).forEach((part) => {
+    //   this.ctx.fillStyle = 'red';
+    //   this.ctx.fillRect(
+    //     part.x * fieldWidth,
+    //     part.y * fieldHeight,
+    //     fieldWidth,
+    //     fieldHeight
+    //   );
+    // });
+
+    for (let index = 1; index < snakeParts.length; index++) {
+      const prevPart = snakeParts[index - 1];
+      const curPart = snakeParts[index];
+
+      let penultimatePartDirection: Direction;
+      if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
+        penultimatePartDirection = 'down';
+      } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
+        penultimatePartDirection = 'up';
+      } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
+        penultimatePartDirection = 'right';
+      } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
+        penultimatePartDirection = 'left';
+      }
+
+      this.drawSnakePart(
+        curPart,
+        fieldWidth,
+        penultimatePartDirection,
+        tickMovementX,
+        tickCount,
+        tickMovementY,
+        fieldHeight
+      );
+    }
+  }
+
+  private drawSnakePart(
+    snakePart: Position,
+    fieldWidth: number,
+    snakeDirection: string,
+    tickMovementX: number,
+    tickCount: number,
+    tickMovementY: number,
+    fieldHeight: number
   ) {
     this.ctx.fillStyle = 'red';
-    const xCurrentPosition = snakePosition.x * fieldWidth;
-    const yCurrentPosition = snakePosition.y * fieldWidth;
+    const xCurrentPosition = snakePart.x * fieldWidth;
+    const yCurrentPosition = snakePart.y * fieldWidth;
     let x;
     let y;
     switch (snakeDirection) {
@@ -166,16 +222,6 @@ export class Game {
       x,
       y
     );
-
-    // this.snake.parts.forEach((part) => {
-    //   this.ctx.fillStyle = 'red';
-    //   this.ctx.fillRect(
-    //     part.x * fieldWidth,
-    //     part.y * fieldHeight,
-    //     fieldWidth,
-    //     fieldHeight
-    //   );
-    // });
   }
 
   private moveSnake() {
