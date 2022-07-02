@@ -143,41 +143,39 @@ export class Game {
       fieldHeight
     );
 
-    // snakeParts.slice(1, snakeParts.length - 2).forEach((part) => {
-    //   this.ctx.fillStyle = 'red';
-    //   this.ctx.fillRect(
-    //     part.x * fieldWidth,
-    //     part.y * fieldHeight,
-    //     fieldWidth,
-    //     fieldHeight
-    //   );
-    // });
-
-    for (let index = 1; index < snakeParts.length; index++) {
-      const prevPart = snakeParts[index - 1];
-      const curPart = snakeParts[index];
-
-      let penultimatePartDirection: Direction;
-      if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
-        penultimatePartDirection = 'down';
-      } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
-        penultimatePartDirection = 'up';
-      } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
-        penultimatePartDirection = 'right';
-      } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
-        penultimatePartDirection = 'left';
-      }
-
-      this.drawSnakePart(
-        curPart,
+    this.snake.parts.slice(1, this.snake.parts.length).forEach((part) => {
+      this.ctx.fillStyle = 'red';
+      this.ctx.fillRect(
+        part.x * fieldWidth,
+        part.y * fieldHeight,
         fieldWidth,
-        penultimatePartDirection,
-        tickMovementX,
-        tickCount,
-        tickMovementY,
         fieldHeight
       );
+    });
+
+    const prevPart = snakeParts[snakeParts.length - 2];
+    const curPart = snakeParts[snakeParts.length - 1];
+
+    let penultimatePartDirection: Direction;
+    if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
+      penultimatePartDirection = 'down';
+    } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
+      penultimatePartDirection = 'up';
+    } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
+      penultimatePartDirection = 'right';
+    } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
+      penultimatePartDirection = 'left';
     }
+
+    this.drawSnakePart(
+      curPart,
+      fieldWidth,
+      penultimatePartDirection,
+      tickMovementX,
+      tickCount,
+      tickMovementY,
+      fieldHeight
+    );
   }
 
   private drawSnakePart(
@@ -216,6 +214,7 @@ export class Game {
         break;
       }
     }
+
     this.ctx.fillRect(x, y, fieldWidth, fieldHeight);
     this.ctx.fillText(
       `xS: ${this.snake.head.x} yS: ${this.snake.head.y}`,
