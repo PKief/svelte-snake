@@ -6,7 +6,11 @@
   import GameFields from './GameFields.svelte';
   import StatusBar from './StatusBar.svelte';
 
-  const game = new Game({ x: 6, y: 8 });
+  const gridSize = 10;
+  const game = new Game({
+    gridSize,
+  });
+
   setContext('game', {
     getGame: () => game,
   });

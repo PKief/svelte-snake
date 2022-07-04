@@ -1,9 +1,9 @@
-import { fromEvent } from 'rxjs';
+import { BehaviorSubject, fromEvent } from 'rxjs';
 import { Food } from './food';
 import { Position } from './position';
 import { Snake } from './snake';
 import { gameState } from './stores';
-import { GameConfig } from './types';
+import { GameConfig, GameState } from './types';
 
 export class Game {
   config: GameConfig;
@@ -11,11 +11,20 @@ export class Game {
   snake: Snake;
 
   private readonly keyPress$ = fromEvent<KeyboardEvent>(document, 'keyup');
+  private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
+
+  get currentGameState() {
+    return this.gameState$.value;
+  }
 
   constructor(config: GameConfig) {
     this.snake = new Snake(new Position(1, 1), 3);
     this.food = new Food(new Position(0, 0));
     this.config = config;
+
+    gameState.subscribe((gameState) => {
+      this.gameState$.next(gameState);
+    });
 
     this.keyPress$.subscribe((event: KeyboardEvent) => {
       switch (event.key) {

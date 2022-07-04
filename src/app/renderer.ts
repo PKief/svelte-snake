@@ -23,6 +23,12 @@ export class GameRenderer {
     let snakeParts: Position[];
 
     return () => {
+      if (this.game.currentGameState.status !== 'playing') {
+        snakeParts = [];
+        snakeDirection = this.game.snake.direction;
+        tickCount = 0;
+        return;
+      }
       if (tickCount === 0) {
         tickCount = fps;
         snakeParts = this.game.snake.parts;
@@ -169,11 +175,6 @@ export class GameRenderer {
     }
 
     this.ctx.fillRect(x, y, fieldWidth, fieldHeight);
-    this.ctx.fillText(
-      `xS: ${this.game.snake.head.x} yS: ${this.game.snake.head.y}`,
-      x,
-      y
-    );
   }
 
   private clearCanvas() {
