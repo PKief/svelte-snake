@@ -37,6 +37,7 @@ export class GameRenderer {
       }
       tickCount--;
       this.clearCanvas();
+      this.drawGameFields(fieldWidth, fieldHeight);
       this.render(
         fieldWidth,
         fieldHeight,
@@ -47,6 +48,22 @@ export class GameRenderer {
         snakeParts
       );
     };
+  }
+
+  private drawGameFields(fieldWidth: number, fieldHeight: number) {
+    for (let i = 0; i < this.game.config.gridSize; i++) {
+      for (let j = 0; j < this.game.config.gridSize; j++) {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = ['#a5d6a7', '#c8e6c9'][(i + j) % 2];
+        this.ctx.fillRect(
+          j * fieldWidth,
+          i * fieldHeight,
+          fieldWidth,
+          fieldHeight
+        );
+        this.ctx.closePath();
+      }
+    }
   }
 
   private render(
@@ -72,7 +89,7 @@ export class GameRenderer {
   }
 
   private drawFood(fieldWidth: number, fieldHeight: number) {
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = '#ef5350';
     this.ctx.fillRect(
       this.game.food.position.x * fieldWidth,
       this.game.food.position.y * fieldHeight,
@@ -103,7 +120,7 @@ export class GameRenderer {
     this.game.snake.parts
       .slice(1, this.game.snake.parts.length)
       .forEach((part) => {
-        this.ctx.fillStyle = 'red';
+        this.ctx.fillStyle = '#00695c';
         this.ctx.fillRect(
           part.x * fieldWidth,
           part.y * fieldHeight,
@@ -146,7 +163,7 @@ export class GameRenderer {
     tickMovementY: number,
     fieldHeight: number
   ) {
-    this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = '#00695c';
     const xCurrentPosition = snakePart.x * fieldWidth;
     const yCurrentPosition = snakePart.y * fieldWidth;
     let x;
