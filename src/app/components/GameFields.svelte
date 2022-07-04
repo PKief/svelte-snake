@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { Game } from '../game';
+  import { GameRenderer } from './../renderer';
 
   let canvas: HTMLCanvasElement;
 
@@ -9,13 +10,14 @@
     const gridSize = 10;
     const game = new Game({
       gridSize,
-      ctx,
     });
+
+    const renderer = new GameRenderer(game, ctx);
 
     const fps = 30;
     const fpsInterval = 500 / fps;
     let then = window.performance.now();
-    const renderContext = game.getRenderingContet(fps);
+    const renderContext = renderer.getRenderingContext(fps);
 
     let frame = requestAnimationFrame(loop);
 

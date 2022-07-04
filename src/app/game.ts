@@ -1,26 +1,21 @@
-import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+import { fromEvent } from 'rxjs';
 import { Food } from './food';
 import { Position } from './position';
 import { Snake } from './snake';
 import { gameState } from './stores';
-import { Direction, GameConfig, GameField } from './types';
+import { GameConfig } from './types';
 
 export class Game {
   config: GameConfig;
   food: Food;
   snake: Snake;
-  paused = new BehaviorSubject<boolean>(false);
-  ctx: CanvasRenderingContext2D;
 
-  private intervalSubscription: Subscription | undefined;
   private readonly keyPress$ = fromEvent<KeyboardEvent>(document, 'keyup');
 
   constructor(config: GameConfig) {
     this.snake = new Snake(new Position(1, 1), 3);
     this.food = new Food(new Position(0, 0));
     this.config = config;
-    this.ctx = config.ctx;
 
     this.keyPress$.subscribe((event: KeyboardEvent) => {
       switch (event.key) {
@@ -50,7 +45,6 @@ export class Game {
   }
 
   pause(): void {
-    this.paused.next(true);
     gameState.update((state) => ({
       ...state,
       status: 'paused',
@@ -58,7 +52,6 @@ export class Game {
   }
 
   endPause(): void {
-    this.paused.next(false);
     gameState.update((state) => ({
       ...state,
       status: 'playing',
@@ -73,169 +66,7 @@ export class Game {
     this.start();
   }
 
-  getRenderingContet(fps: number) {
-    const fieldWidth = this.ctx.canvas.width / this.config.gridSize;
-    const fieldHeight = this.ctx.canvas.height / this.config.gridSize;
-
-    const tickMovementX = fieldWidth / fps;
-    const tickMovementY = fieldHeight / fps;
-    let tickCount = 0;
-    let snakeDirection;
-    let snakeParts: Position[];
-
-    return () => {
-      if (tickCount === 0) {
-        tickCount = fps;
-        snakeParts = this.snake.parts;
-        snakeDirection = this.snake.direction;
-        this.moveSnake();
-      }
-      tickCount--;
-      this.clearCanvas();
-      this.render(
-        fieldWidth,
-        fieldHeight,
-        tickMovementX,
-        tickMovementY,
-        fps - tickCount,
-        snakeDirection,
-        snakeParts
-      );
-    };
-  }
-
-  private render(
-    fieldWidth: number,
-    fieldHeight: number,
-    tickMovementX: number,
-    tickMovementY: number,
-    tickCount: number,
-    snakeDirection: Direction,
-    snakeParts: Position[]
-  ) {
-    this.drawSnake(
-      fieldWidth,
-      fieldHeight,
-      tickMovementX,
-      tickMovementY,
-      tickCount,
-      snakeDirection,
-      snakeParts
-    );
-
-    this.drawFood(fieldWidth, fieldHeight);
-  }
-
-  private drawFood(fieldWidth: number, fieldHeight: number) {
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillRect(
-      this.food.position.x * fieldWidth,
-      this.food.position.y * fieldHeight,
-      fieldWidth,
-      fieldHeight
-    );
-  }
-
-  private drawSnake(
-    fieldWidth: number,
-    fieldHeight: number,
-    tickMovementX: number,
-    tickMovementY: number,
-    tickCount: number,
-    snakeDirection: Direction,
-    snakeParts: Position[]
-  ) {
-    this.drawSnakePart(
-      snakeParts[0],
-      fieldWidth,
-      snakeDirection,
-      tickMovementX,
-      tickCount,
-      tickMovementY,
-      fieldHeight
-    );
-
-    this.snake.parts.slice(1, this.snake.parts.length).forEach((part) => {
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect(
-        part.x * fieldWidth,
-        part.y * fieldHeight,
-        fieldWidth,
-        fieldHeight
-      );
-    });
-
-    const prevPart = snakeParts[snakeParts.length - 2];
-    const curPart = snakeParts[snakeParts.length - 1];
-
-    let penultimatePartDirection: Direction;
-    if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
-      penultimatePartDirection = 'down';
-    } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
-      penultimatePartDirection = 'up';
-    } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
-      penultimatePartDirection = 'right';
-    } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
-      penultimatePartDirection = 'left';
-    }
-
-    this.drawSnakePart(
-      curPart,
-      fieldWidth,
-      penultimatePartDirection,
-      tickMovementX,
-      tickCount,
-      tickMovementY,
-      fieldHeight
-    );
-  }
-
-  private drawSnakePart(
-    snakePart: Position,
-    fieldWidth: number,
-    snakeDirection: string,
-    tickMovementX: number,
-    tickCount: number,
-    tickMovementY: number,
-    fieldHeight: number
-  ) {
-    this.ctx.fillStyle = 'red';
-    const xCurrentPosition = snakePart.x * fieldWidth;
-    const yCurrentPosition = snakePart.y * fieldWidth;
-    let x;
-    let y;
-    switch (snakeDirection) {
-      case 'right': {
-        x = xCurrentPosition + tickMovementX * tickCount;
-        y = yCurrentPosition;
-        break;
-      }
-      case 'down': {
-        x = xCurrentPosition;
-        y = yCurrentPosition + tickMovementY * tickCount;
-        break;
-      }
-      case 'left': {
-        x = xCurrentPosition - tickMovementX * tickCount;
-        y = yCurrentPosition;
-        break;
-      }
-      case 'up': {
-        x = xCurrentPosition;
-        y = yCurrentPosition - tickMovementY * tickCount;
-        break;
-      }
-    }
-
-    this.ctx.fillRect(x, y, fieldWidth, fieldHeight);
-    this.ctx.fillText(
-      `xS: ${this.snake.head.x} yS: ${this.snake.head.y}`,
-      x,
-      y
-    );
-  }
-
-  private moveSnake() {
+  moveSnake() {
     this.snake.move();
 
     const snakeHitsWall =
@@ -266,29 +97,10 @@ export class Game {
     }
   }
 
-  private clearCanvas() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctx.fillStyle = 'blue';
-    this.ctx.fillRect(
-      0,
-      0,
-      this.ctx.canvas.clientWidth,
-      this.ctx.canvas.clientHeight
-    );
-  }
-
   private stop(): void {
     gameState.update((state) => ({
       ...state,
       status: 'stopped',
-    }));
-    this.intervalSubscription?.unsubscribe();
-  }
-
-  private rerender() {
-    gameState.update((state) => ({
-      ...state,
-      fields: this.getGameFields(),
     }));
   }
 
@@ -305,43 +117,6 @@ export class Game {
       ...state,
       gameOver: true,
     }));
-  }
-
-  private getGameFields(): GameField[][] {
-    const gameFields: GameField[][] = [];
-    for (let y = 0; y < this.config.gridSize; y++) {
-      gameFields[y] = [];
-      for (let x = 0; x < this.config.gridSize; x++) {
-        const field: GameField = {
-          id: uuidv4(),
-          type: 'Field',
-        };
-        gameFields[y][x] = field;
-      }
-    }
-
-    const foodField: GameField = {
-      id: uuidv4(),
-      type: 'Food',
-    };
-    gameFields[this.food.position.y][this.food.position.x] = foodField;
-
-    for (let i = 0; i < this.snake.parts.length; i++) {
-      const part = this.snake.parts[i];
-      const type =
-        i === 0
-          ? 'SnakeHead'
-          : i === this.snake.parts.length - 1
-          ? 'SnakeTail'
-          : 'SnakeBody';
-
-      gameFields[part.y][part.x] = {
-        id: uuidv4(),
-        type,
-      };
-    }
-
-    return gameFields;
   }
 
   private generateRandomFoodPosition() {

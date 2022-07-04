@@ -1,7 +1,6 @@
 export type Direction = 'up' | 'down' | 'left' | 'right';
 
 export type GameConfig = {
-  ctx: CanvasRenderingContext2D;
   gridSize: number;
 };
 
