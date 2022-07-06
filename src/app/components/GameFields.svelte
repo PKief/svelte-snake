@@ -29,8 +29,6 @@
 
     let frame = requestAnimationFrame(loop);
 
-    game.start();
-
     return () => {
       cancelAnimationFrame(frame);
     };

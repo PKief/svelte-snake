@@ -1,4 +1,4 @@
-import { BehaviorSubject, fromEvent } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Food } from './food';
 import { Position } from './position';
 import { Snake } from './snake';
@@ -10,12 +10,11 @@ export class Game {
   food: Food;
   snake: Snake;
 
-  private readonly keyPress$ = fromEvent<KeyboardEvent>(document, 'keyup');
-  private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
-
   get currentGameState() {
     return this.gameState$.value;
   }
+
+  private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
 
   constructor(config: GameConfig) {
     this.snake = new Snake(new Position(1, 1), 3);
@@ -24,23 +23,6 @@ export class Game {
 
     gameState.subscribe((gameState) => {
       this.gameState$.next(gameState);
-    });
-
-    this.keyPress$.subscribe((event: KeyboardEvent) => {
-      switch (event.key) {
-        case 'ArrowUp':
-          this.snake.switchDirection('up');
-          break;
-        case 'ArrowDown':
-          this.snake.switchDirection('down');
-          break;
-        case 'ArrowLeft':
-          this.snake.switchDirection('left');
-          break;
-        case 'ArrowRight':
-          this.snake.switchDirection('right');
-          break;
-      }
     });
   }
 

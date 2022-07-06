@@ -3,6 +3,7 @@
   import '../../styles/styles.scss';
   import { Game } from '../game';
   import AppBar from './AppBar.svelte';
+  import Controls from './Controls.svelte';
   import GameFields from './GameFields.svelte';
   import StatusBar from './StatusBar.svelte';
 
@@ -10,7 +11,6 @@
   const game = new Game({
     gridSize,
   });
-
   setContext('game', {
     getGame: () => game,
   });
@@ -22,7 +22,9 @@
 </header>
 
 <main>
-  <GameFields />
+  <Controls>
+    <GameFields />
+  </Controls>
 </main>
 
 <style lang="scss">
