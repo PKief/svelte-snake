@@ -38,7 +38,8 @@ export class GameRenderer {
       tickCount--;
       this.clearCanvas();
       this.drawGameFields(fieldWidth, fieldHeight);
-      this.render(
+      this.drawFood(fieldWidth, fieldHeight);
+      this.drawSnake(
         fieldWidth,
         fieldHeight,
         tickMovementX,
@@ -64,28 +65,6 @@ export class GameRenderer {
         this.ctx.closePath();
       }
     }
-  }
-
-  private render(
-    fieldWidth: number,
-    fieldHeight: number,
-    tickMovementX: number,
-    tickMovementY: number,
-    tickCount: number,
-    snakeDirection: Direction,
-    snakeParts: Position[]
-  ) {
-    this.drawSnake(
-      fieldWidth,
-      fieldHeight,
-      tickMovementX,
-      tickMovementY,
-      tickCount,
-      snakeDirection,
-      snakeParts
-    );
-
-    this.drawFood(fieldWidth, fieldHeight);
   }
 
   private drawFood(fieldWidth: number, fieldHeight: number) {
