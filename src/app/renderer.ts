@@ -1,18 +1,18 @@
 import { Game } from './game';
 import { Position } from './position';
-import { Direction } from './types';
+import { ContextPath2D, Direction } from './types';
 
 export class GameRenderer {
-  private ctx: CanvasRenderingContext2D;
+  private ctx: ContextPath2D;
   private game: Game;
 
-  constructor(game: Game, ctx: CanvasRenderingContext2D) {
+  constructor(game: Game, ctx: ContextPath2D) {
     this.game = game;
     this.ctx = ctx;
   }
 
   getRenderingContext(fps: number) {
-    let remainingTicks = 0;
+    let remainingFrames = 0;
     let snakeDirection: Direction;
     let snakeParts: Position[];
 
@@ -28,24 +28,24 @@ export class GameRenderer {
           break;
         }
         case 'playing': {
-          if (remainingTicks === 0) {
-            remainingTicks = fps;
+          if (remainingFrames === 0) {
+            remainingFrames = fps;
             snakeParts = this.game.snake.parts;
             snakeDirection = this.game.snake.direction;
             this.game.moveSnake();
           }
-          remainingTicks--;
+          remainingFrames--;
           break;
         }
       }
 
-      this.renderGame(fps, remainingTicks, snakeDirection, snakeParts);
+      this.renderGame(fps, remainingFrames, snakeDirection, snakeParts);
     };
   }
 
   private renderGame(
     fps: number,
-    remainingTicks: number,
+    remainingFrames: number,
     snakeDirection: Direction,
     snakeParts: Position[]
   ) {
@@ -57,7 +57,7 @@ export class GameRenderer {
     const frameIndex =
       this.game.currentGameState.status === 'initial'
         ? 0
-        : fps - remainingTicks;
+        : fps - remainingFrames;
 
     this.clearCanvas();
     this.drawGameFields(fieldWidth, fieldHeight);
@@ -115,44 +115,36 @@ export class GameRenderer {
       distancePerFrameX,
       distancePerFrameY,
       frameIndex,
-      fieldHeight
+      fieldHeight,
+      true
     );
 
-    this.game.snake.parts
-      .slice(1, this.game.snake.parts.length)
-      .forEach((part) => {
-        this.ctx.fillStyle = '#00695c';
-        this.ctx.fillRect(
-          part.x * fieldWidth,
-          part.y * fieldHeight,
-          fieldWidth,
-          fieldHeight
-        );
-      });
+    snakeParts.forEach((part, index) => {
+      if (index === 0) return;
+      const prevPart = snakeParts[index - 1];
+      const curPart = part;
 
-    const prevPart = snakeParts[snakeParts.length - 2];
-    const curPart = snakeParts[snakeParts.length - 1];
+      let prevPartDirection: Direction;
+      if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
+        prevPartDirection = 'down';
+      } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
+        prevPartDirection = 'up';
+      } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
+        prevPartDirection = 'right';
+      } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
+        prevPartDirection = 'left';
+      }
 
-    let penultimatePartDirection: Direction;
-    if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
-      penultimatePartDirection = 'down';
-    } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
-      penultimatePartDirection = 'up';
-    } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
-      penultimatePartDirection = 'right';
-    } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
-      penultimatePartDirection = 'left';
-    }
-
-    this.drawSnakePart(
-      curPart,
-      fieldWidth,
-      penultimatePartDirection,
-      distancePerFrameX,
-      distancePerFrameY,
-      frameIndex,
-      fieldHeight
-    );
+      this.drawSnakePart(
+        curPart,
+        fieldWidth,
+        prevPartDirection,
+        distancePerFrameX,
+        distancePerFrameY,
+        frameIndex,
+        fieldHeight
+      );
+    });
   }
 
   private drawSnakePart(
@@ -162,7 +154,8 @@ export class GameRenderer {
     distancePerFrameX: number,
     distancePerFrameY: number,
     frameIndex: number,
-    fieldHeight: number
+    fieldHeight: number,
+    isHead = false
   ) {
     this.ctx.fillStyle = '#00695c';
     const xCurrentPosition = snakePart.x * fieldWidth;
@@ -192,7 +185,13 @@ export class GameRenderer {
       }
     }
 
-    this.ctx.fillRect(x, y, fieldWidth, fieldHeight);
+    if (isHead) {
+      this.ctx.beginPath();
+      this.ctx.roundRect(x, y, fieldWidth, fieldHeight, [0, 20, 20, 0]);
+      this.ctx.fill();
+    } else {
+      this.ctx.fillRect(x, y, fieldWidth, fieldHeight);
+    }
   }
 
   private clearCanvas() {

@@ -9,7 +9,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 
 const config: Configuration = {
   mode: 'development',
-  entry: ['./main.ts'],
+  entry: { index: './main.ts', polyfills: './polyfills' },
   context: resolve(__dirname, '../src'),
   resolve: {
     alias: {
@@ -21,7 +21,7 @@ const config: Configuration = {
   },
   output: {
     path: resolve(__dirname, '../dist'),
-    filename: 'index.js',
+    filename: '[name].bundle.js',
     clean: true,
   },
   module: {
