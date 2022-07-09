@@ -10,20 +10,26 @@ export class Game {
   food: Food;
   snake: Snake;
 
+  private readonly snakeStartPosition = new Position(1, 1);
+
+  private readonly snakeStartSize = 3;
+
+  private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
+
   get currentGameState() {
     return this.gameState$.value;
   }
 
-  private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
-
   constructor(config: GameConfig) {
-    this.snake = new Snake(new Position(1, 1), 3);
+    this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
     this.config = config;
 
     gameState.subscribe((gameState) => {
       this.gameState$.next(gameState);
     });
+
+    this.generateRandomFoodPosition();
   }
 
   start(): void {
@@ -32,7 +38,6 @@ export class Game {
       status: 'playing',
       gameOver: false,
     }));
-    this.generateRandomFoodPosition();
   }
 
   pause(): void {
@@ -51,8 +56,9 @@ export class Game {
 
   restart(): void {
     this.stop();
-    this.snake = new Snake(new Position(1, 1), 3);
+    this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
+    this.generateRandomFoodPosition();
     this.updateScore(0);
     this.start();
   }
