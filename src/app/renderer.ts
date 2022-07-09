@@ -108,16 +108,49 @@ export class GameRenderer {
     snakeDirection: Direction,
     snakeParts: Position[]
   ) {
-    this.drawSnakePart(
-      snakeParts[0],
-      fieldWidth,
-      snakeDirection,
-      distancePerFrameX,
-      distancePerFrameY,
-      frameIndex,
-      fieldHeight,
-      true
-    );
+    this.ctx.beginPath(); // Start a new path.
+    this.ctx.lineWidth = 1;
+    this.ctx.lineJoin = 'bevel';
+    this.ctx.lineCap = 'round';
+    this.ctx.strokeStyle = 'green'; // This path is green.
+    switch (snakeDirection) {
+      case 'right': {
+        this.ctx.moveTo(
+          snakeParts[0].x * fieldWidth +
+            fieldWidth * 0.5 +
+            distancePerFrameX * frameIndex,
+          snakeParts[0].y * fieldHeight + fieldHeight * 0.5
+        );
+        break;
+      }
+      case 'left': {
+        this.ctx.moveTo(
+          snakeParts[0].x * fieldWidth +
+            fieldWidth * 0.5 -
+            distancePerFrameX * frameIndex,
+          snakeParts[0].y * fieldHeight + fieldHeight * 0.5
+        );
+        break;
+      }
+      case 'up': {
+        this.ctx.moveTo(
+          snakeParts[0].x * fieldWidth + fieldWidth * 0.5,
+          snakeParts[0].y * fieldHeight +
+            fieldHeight * 0.5 -
+            distancePerFrameY * frameIndex
+        );
+        break;
+      }
+      case 'down': {
+        this.ctx.moveTo(
+          snakeParts[0].x * fieldWidth + fieldWidth * 0.5,
+          snakeParts[0].y * fieldHeight +
+            fieldHeight * 0.5 +
+            distancePerFrameY * frameIndex
+        );
+        break;
+      }
+    }
 
     snakeParts.forEach((part, index) => {
       if (index === 0) return;
@@ -135,16 +168,93 @@ export class GameRenderer {
         prevPartDirection = 'left';
       }
 
-      this.drawSnakePart(
-        curPart,
-        fieldWidth,
-        prevPartDirection,
-        distancePerFrameX,
-        distancePerFrameY,
-        frameIndex,
-        fieldHeight
-      );
+      switch (prevPartDirection) {
+        case 'right': {
+          this.ctx.quadraticCurveTo(
+            prevPart.x * fieldWidth + fieldWidth * 0.5,
+            prevPart.y * fieldHeight + fieldHeight * 0.5,
+            part.x * fieldWidth +
+              fieldWidth * 0.5 +
+              distancePerFrameX * frameIndex,
+            part.y * fieldHeight + fieldHeight * 0.5
+          );
+          break;
+        }
+        case 'left': {
+          this.ctx.quadraticCurveTo(
+            prevPart.x * fieldWidth + fieldWidth * 0.5,
+            prevPart.y * fieldHeight + fieldHeight * 0.5,
+            part.x * fieldWidth +
+              fieldWidth * 0.5 -
+              distancePerFrameX * frameIndex,
+            part.y * fieldHeight + fieldHeight * 0.5
+          );
+          break;
+        }
+        case 'up': {
+          this.ctx.quadraticCurveTo(
+            prevPart.x * fieldWidth + fieldWidth * 0.5,
+            prevPart.y * fieldHeight + fieldHeight * 0.5,
+            part.x * fieldWidth + fieldWidth * 0.5,
+            part.y * fieldHeight +
+              fieldHeight * 0.5 -
+              distancePerFrameX * frameIndex
+          );
+          break;
+        }
+        case 'down': {
+          this.ctx.quadraticCurveTo(
+            prevPart.x * fieldWidth + fieldWidth * 0.5,
+            prevPart.y * fieldHeight + fieldHeight * 0.5,
+            part.x * fieldWidth + fieldWidth * 0.5,
+            part.y * fieldHeight +
+              fieldHeight * 0.5 +
+              distancePerFrameX * frameIndex
+          );
+          break;
+        }
+      }
     });
+
+    this.ctx.stroke();
+    this.ctx.closePath(); // Close the current path.
+    // this.drawSnakePart(
+    //   snakeParts[0],
+    //   fieldWidth,
+    //   snakeDirection,
+    //   distancePerFrameX,
+    //   distancePerFrameY,
+    //   frameIndex,
+    //   fieldHeight,
+    //   true
+    // );
+
+    // snakeParts.forEach((part, index) => {
+    //   if (index === 0) return;
+    //   const prevPart = snakeParts[index - 1];
+    //   const curPart = part;
+
+    //   let prevPartDirection: Direction;
+    //   if (curPart.x === prevPart.x && curPart.y < prevPart.y) {
+    //     prevPartDirection = 'down';
+    //   } else if (curPart.x === prevPart.x && curPart.y > prevPart.y) {
+    //     prevPartDirection = 'up';
+    //   } else if (curPart.x < prevPart.x && curPart.y === prevPart.y) {
+    //     prevPartDirection = 'right';
+    //   } else if (curPart.x > prevPart.x && curPart.y === prevPart.y) {
+    //     prevPartDirection = 'left';
+    //   }
+
+    //   this.drawSnakePart(
+    //     curPart,
+    //     fieldWidth,
+    //     prevPartDirection,
+    //     distancePerFrameX,
+    //     distancePerFrameY,
+    //     frameIndex,
+    //     fieldHeight
+    //   );
+    // });
   }
 
   private drawSnakePart(
