@@ -11,7 +11,7 @@
     const ctx = canvas.getContext('2d');
     const renderer = new GameRenderer(game, ctx as ContextPath2D);
 
-    const fps = 20;
+    const fps = 30;
     const fpsInterval = 300 / fps;
     let then = window.performance.now();
     const renderContext = renderer.getRenderingContext(fps);
