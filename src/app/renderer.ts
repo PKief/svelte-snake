@@ -18,10 +18,6 @@ export class GameRenderer {
 
     return () => {
       switch (this.game.currentGameState.status) {
-        case 'paused':
-        case 'stopped': {
-          return;
-        }
         case 'initial': {
           snakeDirection = this.game.snake.direction;
           snakeParts = this.game.snake.parts;
@@ -91,11 +87,11 @@ export class GameRenderer {
 
   private drawFood(fieldWidth: number, fieldHeight: number) {
     this.ctx.fillStyle = '#ef5350';
-    this.ctx.fillRect(
-      this.game.food.position.x * fieldWidth,
-      this.game.food.position.y * fieldHeight,
-      fieldWidth,
-      fieldHeight
+    this.ctx.font = `${fieldHeight - 5}px Arial`;
+    this.ctx.fillText(
+      '🍎',
+      this.game.food.position.x * fieldWidth - 2,
+      this.game.food.position.y * fieldHeight + 24
     );
   }
 
@@ -120,7 +116,7 @@ export class GameRenderer {
     this.ctx.shadowColor = 'rgb(33,33,33)';
     this.ctx.shadowBlur = 5;
     this.ctx.shadowOffsetY = 1;
-    this.ctx.strokeStyle = 'green';
+    this.ctx.strokeStyle = '#d84315';
 
     this.drawSnakePart(
       snakeDirection,
@@ -155,6 +151,166 @@ export class GameRenderer {
 
     this.ctx.stroke();
     this.resetShadow();
+    this.ctx.closePath();
+
+    this.drawSnakeEyes(
+      snakeParts[0],
+      fieldWidth,
+      fieldHeight,
+      distancePerFrameX,
+      distancePerFrameY,
+      frameIndex,
+      snakeDirection,
+      fieldCenter
+    );
+  }
+
+  private drawSnakeEyes(
+    snakePart: Position,
+    fieldWidth: number,
+    fieldHeight: number,
+    distancePerFrameX: number,
+    distancePerFrameY: number,
+    frameIndex: number,
+    snakeDirection: Direction,
+    fieldCenter: Position
+  ) {
+    const eyeOffset = 6;
+    const radius = 5;
+    let x,
+      y,
+      eye1x,
+      eye1y,
+      eye2x,
+      eye2y,
+      eye1Pupilx,
+      eye1Pupily,
+      eye2Pupilx,
+      eye2Pupily;
+
+    let rotation: 1 | 2 | 3 | 4;
+    switch (snakeDirection) {
+      case 'right': {
+        x =
+          snakePart.x * fieldWidth +
+          fieldCenter.x +
+          distancePerFrameX * frameIndex;
+        y = snakePart.y * fieldHeight + fieldCenter.y;
+        eye1x = eye2x = x - eyeOffset;
+        eye1Pupilx = eye2Pupilx = eye1x + 2;
+        eye1y = eye1Pupily = y - eyeOffset;
+        eye2y = eye2Pupily = y + eyeOffset;
+        rotation = 1;
+        break;
+      }
+      case 'left': {
+        x =
+          snakePart.x * fieldWidth +
+          fieldCenter.x -
+          distancePerFrameX * frameIndex;
+        y = snakePart.y * fieldHeight + fieldCenter.y;
+        eye1x = eye2x = x + eyeOffset;
+        eye1Pupilx = eye2Pupilx = eye1x - 2;
+        eye1y = eye1Pupily = y - eyeOffset;
+        eye2y = eye2Pupily = y + eyeOffset;
+        rotation = 1;
+        break;
+      }
+      case 'up': {
+        x = snakePart.x * fieldWidth + fieldCenter.x;
+        y =
+          snakePart.y * fieldHeight +
+          fieldCenter.x -
+          distancePerFrameY * frameIndex;
+        eye1x = eye1Pupilx = x - eyeOffset;
+        eye2x = eye2Pupilx = x + eyeOffset;
+        eye1y = eye2y = y + eyeOffset;
+        eye1Pupily = eye2Pupily = eye1y - 2;
+        rotation = 2;
+        break;
+      }
+      case 'down': {
+        x = snakePart.x * fieldWidth + fieldCenter.x;
+        y =
+          snakePart.y * fieldHeight +
+          fieldCenter.y +
+          distancePerFrameY * frameIndex;
+        eye1x = eye1Pupilx = x - eyeOffset;
+        eye2x = eye2Pupilx = x + eyeOffset;
+        eye1y = eye2y = y - eyeOffset;
+        eye1Pupily = eye2Pupily = eye1y + 2;
+        rotation = 2;
+        break;
+      }
+    }
+
+    if (this.game.currentGameState.gameOver) {
+      eye1Pupilx = eye1Pupilx + 2;
+      eye1Pupily = eye1Pupily + 2;
+      eye2Pupilx = eye2Pupilx - 2;
+      eye2Pupily = eye2Pupily - 2;
+    }
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'white';
+    this.ctx.ellipse(
+      eye1x,
+      eye1y,
+      radius,
+      radius,
+      Math.PI / rotation,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.fill();
+    this.ctx.strokeStyle = 'black';
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
+    this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'black';
+    this.ctx.ellipse(
+      eye1Pupilx,
+      eye1Pupily,
+      radius / 2,
+      radius / 2,
+      Math.PI / rotation,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.fill();
+    this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'white';
+    this.ctx.ellipse(
+      eye2x,
+      eye2y,
+      radius,
+      radius,
+      Math.PI / rotation,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.fill();
+    this.ctx.strokeStyle = 'black';
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
+    this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'black';
+    this.ctx.ellipse(
+      eye2Pupilx,
+      eye2Pupily,
+      radius / 2,
+      radius / 2,
+      Math.PI / rotation,
+      0,
+      2 * Math.PI
+    );
+    this.ctx.fill();
     this.ctx.closePath();
   }
 
@@ -206,48 +362,47 @@ export class GameRenderer {
     distancePerFrameX: number,
     distancePerFrameY: number,
     frameIndex: number,
-    fieldCenter: { x: number; y: number },
+    fieldCenter: Position,
     isHead: boolean = false
   ) {
     const contextMethod: keyof ContextPath2D = isHead ? 'moveTo' : 'lineTo';
+    let x, y;
     switch (snakeDirection) {
       case 'right': {
-        this.ctx[contextMethod](
+        x =
           snakePart.x * fieldWidth +
-            fieldCenter.x +
-            distancePerFrameX * frameIndex,
-          snakePart.y * fieldHeight + fieldCenter.y
-        );
+          fieldCenter.x +
+          distancePerFrameX * frameIndex;
+        y = snakePart.y * fieldHeight + fieldCenter.y;
         break;
       }
       case 'left': {
-        this.ctx[contextMethod](
+        x =
           snakePart.x * fieldWidth +
-            fieldCenter.x -
-            distancePerFrameX * frameIndex,
-          snakePart.y * fieldHeight + fieldCenter.y
-        );
+          fieldCenter.x -
+          distancePerFrameX * frameIndex;
+        y = snakePart.y * fieldHeight + fieldCenter.y;
         break;
       }
       case 'up': {
-        this.ctx[contextMethod](
-          snakePart.x * fieldWidth + fieldCenter.x,
+        x = snakePart.x * fieldWidth + fieldCenter.x;
+        y =
           snakePart.y * fieldHeight +
-            fieldCenter.x -
-            distancePerFrameY * frameIndex
-        );
+          fieldCenter.x -
+          distancePerFrameY * frameIndex;
         break;
       }
       case 'down': {
-        this.ctx[contextMethod](
-          snakePart.x * fieldWidth + fieldCenter.x,
+        x = snakePart.x * fieldWidth + fieldCenter.x;
+        y =
           snakePart.y * fieldHeight +
-            fieldCenter.y +
-            distancePerFrameY * frameIndex
-        );
+          fieldCenter.y +
+          distancePerFrameY * frameIndex;
         break;
       }
     }
+
+    this.ctx[contextMethod](x, y);
   }
 
   private resetShadow() {
