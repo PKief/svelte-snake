@@ -113,6 +113,7 @@ export class GameRenderer {
       y: fieldHeight * 0.5,
     };
     this.ctx.beginPath();
+
     this.ctx.lineWidth = (fieldWidth + fieldHeight) / 5;
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
@@ -133,7 +134,7 @@ export class GameRenderer {
       true
     );
 
-    this.drawSnakeBodyParts(fieldWidth, fieldCenter, fieldHeight);
+    this.drawSnakeBodyParts(fieldWidth, fieldHeight, fieldCenter);
 
     const lastPart = snakeParts[snakeParts.length - 1];
     const prevPartDirection: Direction = this.getPrevPartDirection(
@@ -159,8 +160,8 @@ export class GameRenderer {
 
   private drawSnakeBodyParts(
     fieldWidth: number,
-    fieldCenter: { x: number; y: number },
-    fieldHeight: number
+    fieldHeight: number,
+    fieldCenter: { x: number; y: number }
   ) {
     this.game.snake.parts.forEach((part, index) => {
       if (index === 0) return;
