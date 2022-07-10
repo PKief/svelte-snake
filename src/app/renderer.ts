@@ -69,8 +69,7 @@ export class GameRenderer {
       distancePerFrameY,
       frameIndex,
       snakeDirection,
-      snakeParts,
-      remainingFrames / fps
+      snakeParts
     );
   }
 
@@ -107,63 +106,73 @@ export class GameRenderer {
     distancePerFrameY: number,
     frameIndex: number,
     snakeDirection: Direction,
-    snakeParts: Position[],
-    percentage: number
+    snakeParts: Position[]
   ) {
-    this.ctx.beginPath(); // Start a new path.
-    this.ctx.lineWidth = (fieldWidth + fieldHeight) / 3;
+    const fieldCenter = {
+      x: fieldWidth * 0.5,
+      y: fieldHeight * 0.5,
+    };
+    this.ctx.beginPath();
+    this.ctx.lineWidth = (fieldWidth + fieldHeight) / 5;
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
-    this.ctx.strokeStyle = 'green'; // This path is green.
-    switch (snakeDirection) {
-      case 'right': {
-        this.ctx.moveTo(
-          snakeParts[0].x * fieldWidth +
-            fieldWidth * 0.5 +
-            distancePerFrameX * frameIndex,
-          snakeParts[0].y * fieldHeight + fieldHeight * 0.5
-        );
-        break;
-      }
-      case 'left': {
-        this.ctx.moveTo(
-          snakeParts[0].x * fieldWidth +
-            fieldWidth * 0.5 -
-            distancePerFrameX * frameIndex,
-          snakeParts[0].y * fieldHeight + fieldHeight * 0.5
-        );
-        break;
-      }
-      case 'up': {
-        this.ctx.moveTo(
-          snakeParts[0].x * fieldWidth + fieldWidth * 0.5,
-          snakeParts[0].y * fieldHeight +
-            fieldWidth * 0.5 -
-            distancePerFrameY * frameIndex
-        );
-        break;
-      }
-      case 'down': {
-        this.ctx.moveTo(
-          snakeParts[0].x * fieldWidth + fieldWidth * 0.5,
-          snakeParts[0].y * fieldHeight +
-            fieldHeight * 0.5 +
-            distancePerFrameY * frameIndex
-        );
-        break;
-      }
-    }
+    this.ctx.shadowColor = 'rgb(33,33,33)';
+    this.ctx.shadowBlur = 5;
+    this.ctx.shadowOffsetY = 1;
+    this.ctx.strokeStyle = 'green';
 
+    this.drawSnakePart(
+      snakeDirection,
+      snakeParts[0],
+      fieldWidth,
+      fieldHeight,
+      distancePerFrameX,
+      distancePerFrameY,
+      frameIndex,
+      fieldCenter,
+      true
+    );
+
+    this.drawSnakeBodyParts(fieldWidth, fieldCenter, fieldHeight);
+
+    const lastPart = snakeParts[snakeParts.length - 1];
+    const prevPartDirection: Direction = this.getPrevPartDirection(
+      snakeParts,
+      lastPart
+    );
+
+    this.drawSnakePart(
+      prevPartDirection,
+      lastPart,
+      fieldWidth,
+      fieldHeight,
+      distancePerFrameX,
+      distancePerFrameY,
+      frameIndex,
+      fieldCenter
+    );
+
+    this.ctx.stroke();
+    this.resetShadow();
+    this.ctx.closePath();
+  }
+
+  private drawSnakeBodyParts(
+    fieldWidth: number,
+    fieldCenter: { x: number; y: number },
+    fieldHeight: number
+  ) {
     this.game.snake.parts.forEach((part, index) => {
       if (index === 0) return;
 
       this.ctx.lineTo(
-        part.x * fieldWidth + fieldWidth * 0.5,
-        part.y * fieldHeight + fieldHeight * 0.5
+        part.x * fieldWidth + fieldCenter.x,
+        part.y * fieldHeight + fieldCenter.y
       );
     });
+  }
 
-    const lastPart = snakeParts[snakeParts.length - 1];
+  private getPrevPartDirection(snakeParts: Position[], lastPart: Position) {
     const nextToLastPart = snakeParts[snakeParts.length - 2];
 
     let prevPartDirection: Direction;
@@ -185,44 +194,63 @@ export class GameRenderer {
     ) {
       prevPartDirection = 'left';
     }
+    return prevPartDirection;
+  }
 
-    switch (prevPartDirection) {
-      case 'right':
-        this.ctx.lineTo(
-          lastPart.x * fieldWidth +
-            fieldWidth * 0.5 +
+  private drawSnakePart(
+    snakeDirection: string,
+    snakePart: Position,
+    fieldWidth: number,
+    fieldHeight: number,
+    distancePerFrameX: number,
+    distancePerFrameY: number,
+    frameIndex: number,
+    fieldCenter: { x: number; y: number },
+    isHead: boolean = false
+  ) {
+    const contextMethod: keyof ContextPath2D = isHead ? 'moveTo' : 'lineTo';
+    switch (snakeDirection) {
+      case 'right': {
+        this.ctx[contextMethod](
+          snakePart.x * fieldWidth +
+            fieldCenter.x +
             distancePerFrameX * frameIndex,
-          lastPart.y * fieldHeight + fieldHeight * 0.5
+          snakePart.y * fieldHeight + fieldCenter.y
         );
         break;
-      case 'left':
-        this.ctx.lineTo(
-          lastPart.x * fieldWidth +
-            fieldWidth * 0.5 -
+      }
+      case 'left': {
+        this.ctx[contextMethod](
+          snakePart.x * fieldWidth +
+            fieldCenter.x -
             distancePerFrameX * frameIndex,
-          lastPart.y * fieldHeight + fieldHeight * 0.5
+          snakePart.y * fieldHeight + fieldCenter.y
         );
         break;
-      case 'up':
-        this.ctx.lineTo(
-          lastPart.x * fieldWidth + fieldWidth * 0.5,
-          lastPart.y * fieldHeight +
-            fieldHeight * 0.5 -
+      }
+      case 'up': {
+        this.ctx[contextMethod](
+          snakePart.x * fieldWidth + fieldCenter.x,
+          snakePart.y * fieldHeight +
+            fieldCenter.x -
             distancePerFrameY * frameIndex
         );
         break;
-      case 'down':
-        this.ctx.lineTo(
-          lastPart.x * fieldWidth + fieldWidth * 0.5,
-          lastPart.y * fieldHeight +
-            fieldHeight * 0.5 +
+      }
+      case 'down': {
+        this.ctx[contextMethod](
+          snakePart.x * fieldWidth + fieldCenter.x,
+          snakePart.y * fieldHeight +
+            fieldCenter.y +
             distancePerFrameY * frameIndex
         );
         break;
+      }
     }
+  }
 
-    this.ctx.stroke();
-    this.ctx.closePath();
+  private resetShadow() {
+    this.ctx.shadowColor = 'rgba(0,0,0,0)';
   }
 
   private clearCanvas() {
