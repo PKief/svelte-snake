@@ -2,6 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Food } from './food';
 import { Position } from './position';
 import { Snake } from './snake';
+import { Sounds } from './sounds';
 import { gameState } from './stores';
 import { GameConfig, GameState } from './types';
 
@@ -9,6 +10,7 @@ export class Game {
   config: GameConfig;
   food: Food;
   snake: Snake;
+  sounds: Sounds;
 
   private readonly snakeStartPosition = new Position(1, 1);
 
@@ -24,6 +26,7 @@ export class Game {
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
     this.config = config;
+    this.sounds = new Sounds();
 
     gameState.subscribe((gameState) => {
       this.gameState$.next(gameState);
@@ -82,6 +85,7 @@ export class Game {
     );
 
     if (snakeHitsWall || snakeBitesItself) {
+      this.sounds.bump();
       this.endGame();
     }
 
@@ -90,6 +94,7 @@ export class Game {
       this.snake.head.y === this.food.position.y;
 
     if (snakeHitsFood) {
+      this.sounds.eat();
       this.snake.eatFood();
       const currentScore = this.gameState$.value.score;
       this.updateScore(currentScore + 1);

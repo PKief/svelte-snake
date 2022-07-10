@@ -87,15 +87,19 @@ export class GameRenderer {
 
   private drawFood(fieldWidth: number, fieldHeight: number) {
     this.ctx.fillStyle = '#ef5350';
-    this.ctx.font = `${fieldHeight - 10}px Arial`;
+    this.ctx.font = `${fieldHeight / 1.5}px Arial`;
+    this.addShadowToContext();
+    this.ctx.fillText(
+      '🍎',
+      this.game.food.position.x * fieldWidth + fieldWidth * 0.05,
+      this.game.food.position.y * fieldHeight + fieldHeight * 0.75
+    );
+  }
+
+  private addShadowToContext() {
     this.ctx.shadowColor = '#7ba07d8f';
     this.ctx.shadowBlur = 0;
     this.ctx.shadowOffsetY = 3;
-    this.ctx.fillText(
-      '🍎',
-      this.game.food.position.x * fieldWidth + 2,
-      this.game.food.position.y * fieldHeight + 20
-    );
   }
 
   private drawSnake(
@@ -112,14 +116,11 @@ export class GameRenderer {
       y: fieldHeight * 0.5,
     };
     this.ctx.beginPath();
-
     this.ctx.lineWidth = (fieldWidth + fieldHeight) / 5;
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
-    this.ctx.shadowColor = '#7ba07d8f';
-    this.ctx.shadowBlur = 0;
-    this.ctx.shadowOffsetY = 3;
     this.ctx.strokeStyle = '#42a5f5';
+    this.addShadowToContext();
 
     this.drawSnakePart(
       snakeDirection,

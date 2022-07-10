@@ -22,6 +22,7 @@ const config: Configuration = {
   output: {
     path: resolve(__dirname, '../dist'),
     filename: '[name].bundle.js',
+    assetModuleFilename: 'assets/[hash][ext][query]',
     clean: true,
   },
   module: {
@@ -80,9 +81,9 @@ const config: Configuration = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
+        test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2|wav)$/i,
         // More information here https://webpack.js.org/guides/asset-modules/
-        type: 'asset',
+        type: 'asset/resource',
       },
     ],
   },
