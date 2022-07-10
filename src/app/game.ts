@@ -59,6 +59,8 @@ export class Game {
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
     this.generateRandomFoodPosition();
+    const currentScore = this.gameState$.value.score;
+    this.updateHighScore(currentScore);
     this.updateScore(0);
     this.start();
   }
@@ -89,7 +91,8 @@ export class Game {
 
     if (snakeHitsFood) {
       this.snake.eatFood();
-      this.updateScore(1);
+      const currentScore = this.gameState$.value.score;
+      this.updateScore(currentScore + 1);
       this.generateRandomFoodPosition();
     }
   }
@@ -101,10 +104,21 @@ export class Game {
     }));
   }
 
-  private updateScore(update: number) {
+  private updateScore(score: number) {
     gameState.update((state) => ({
       ...state,
-      score: state.score + update,
+      score,
+    }));
+    const highScore = this.gameState$.value.highScore;
+    if (score > highScore) {
+      this.updateHighScore(score);
+    }
+  }
+
+  private updateHighScore(highScore: number) {
+    gameState.update((state) => ({
+      ...state,
+      highScore,
     }));
   }
 

@@ -5,5 +5,6 @@ export const gameState = writable<GameState>({
   fields: [],
   gameOver: false,
   score: 0,
+  highScore: 0,
   status: 'initial',
 });

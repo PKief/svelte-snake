@@ -2,7 +2,6 @@
   import { setContext } from 'svelte';
   import '../../styles/styles.scss';
   import { Game } from '../game';
-  import AppBar from './AppBar.svelte';
   import Controls from './Controls.svelte';
   import GameFields from './GameFields.svelte';
   import StatusBar from './StatusBar.svelte';
@@ -16,26 +15,62 @@
   });
 </script>
 
-<header>
-  <AppBar />
-  <StatusBar />
-</header>
-
-<main>
-  <Controls>
-    <GameFields />
-  </Controls>
-</main>
+<div class="app-container">
+  <div class="app-context">
+    <header>
+      <h1 class="title">Snake</h1>
+    </header>
+    <main>
+      <StatusBar />
+      <Controls>
+        <GameFields />
+      </Controls>
+    </main>
+  </div>
+</div>
 
 <style lang="scss">
+  .app-container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    background: linear-gradient(-45deg, #c5e1a5, #ef9a9a, #9fa8da, #cddc39);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  header {
+    margin: 6rem 0;
+
+    h1.title {
+      text-align: center;
+      font-family: monospace;
+      font-style: italic;
+      font-size: 6rem;
+    }
+  }
+
   main {
     text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
+    box-shadow: 0px 4px 0px #66bb6a7d;
 
     @media (min-width: 640px) {
       max-width: none;
+    }
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
     }
   }
 </style>

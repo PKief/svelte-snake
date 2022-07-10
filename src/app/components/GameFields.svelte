@@ -11,8 +11,8 @@
     const ctx = canvas.getContext('2d');
     const renderer = new GameRenderer(game, ctx as ContextPath2D);
 
-    const fps = 30;
-    const fpsInterval = 300 / fps;
+    const fps = 15;
+    const fpsInterval = 20 / fps;
     let then = window.performance.now();
     const renderContext = renderer.getRenderingContext(fps);
 
@@ -36,12 +36,11 @@
   });
 </script>
 
-<canvas bind:this={canvas} width="300" height="300" />
+<canvas bind:this={canvas} width="500" height="500" />
 
 <style lang="scss">
   canvas {
-    width: 300px;
-    height: 300px;
-    background-color: #666;
+    width: 500px;
+    height: 500px;
   }
 </style>

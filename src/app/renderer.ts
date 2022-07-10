@@ -87,11 +87,14 @@ export class GameRenderer {
 
   private drawFood(fieldWidth: number, fieldHeight: number) {
     this.ctx.fillStyle = '#ef5350';
-    this.ctx.font = `${fieldHeight - 5}px Arial`;
+    this.ctx.font = `${fieldHeight - 10}px Arial`;
+    this.ctx.shadowColor = '#7ba07d8f';
+    this.ctx.shadowBlur = 0;
+    this.ctx.shadowOffsetY = 3;
     this.ctx.fillText(
       '🍎',
-      this.game.food.position.x * fieldWidth - 2,
-      this.game.food.position.y * fieldHeight + 24
+      this.game.food.position.x * fieldWidth + 2,
+      this.game.food.position.y * fieldHeight + 20
     );
   }
 
@@ -113,10 +116,10 @@ export class GameRenderer {
     this.ctx.lineWidth = (fieldWidth + fieldHeight) / 5;
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
-    this.ctx.shadowColor = 'rgb(33,33,33)';
-    this.ctx.shadowBlur = 5;
-    this.ctx.shadowOffsetY = 1;
-    this.ctx.strokeStyle = '#d84315';
+    this.ctx.shadowColor = '#7ba07d8f';
+    this.ctx.shadowBlur = 0;
+    this.ctx.shadowOffsetY = 3;
+    this.ctx.strokeStyle = '#42a5f5';
 
     this.drawSnakePart(
       snakeDirection,
@@ -263,13 +266,13 @@ export class GameRenderer {
       2 * Math.PI
     );
     this.ctx.fill();
-    this.ctx.strokeStyle = 'black';
+    this.ctx.strokeStyle = '#42a5f5';
     this.ctx.lineWidth = 1;
     this.ctx.stroke();
     this.ctx.closePath();
 
     this.ctx.beginPath();
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = '#3f1103';
     this.ctx.ellipse(
       eye1Pupilx,
       eye1Pupily,
@@ -294,13 +297,13 @@ export class GameRenderer {
       2 * Math.PI
     );
     this.ctx.fill();
-    this.ctx.strokeStyle = 'black';
+    this.ctx.strokeStyle = '#42a5f5';
     this.ctx.lineWidth = 1;
     this.ctx.stroke();
     this.ctx.closePath();
 
     this.ctx.beginPath();
-    this.ctx.fillStyle = 'black';
+    this.ctx.fillStyle = '#3f1103';
     this.ctx.ellipse(
       eye2Pupilx,
       eye2Pupily,
