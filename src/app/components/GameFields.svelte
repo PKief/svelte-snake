@@ -40,7 +40,6 @@
 
 <style lang="scss">
   canvas {
-    width: 500px;
-    height: 500px;
+    width: 100%;
   }
 </style>

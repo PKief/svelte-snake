@@ -36,20 +36,25 @@
     position: absolute;
     display: flex;
     justify-content: center;
-    align-items: baseline;
+    align-items: center;
     background: linear-gradient(-45deg, #c5e1a5, #ef9a9a, #9fa8da, #cddc39);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
+
+    .app-context {
+      max-width: 500px;
+      width: 100%;
+    }
   }
 
   header {
-    margin: 2rem 0;
-
     h1.title {
       text-align: center;
       font-family: monospace;
       font-style: italic;
-      font-size: 6rem;
+      font-size: 4rem;
+      padding: 2rem 0;
+      margin: 0;
       text-shadow: 0px 4px #8383834d;
     }
   }
