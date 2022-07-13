@@ -43,7 +43,7 @@
   }
 
   header {
-    margin: 6rem 0;
+    margin: 2rem 0;
 
     h1.title {
       text-align: center;
