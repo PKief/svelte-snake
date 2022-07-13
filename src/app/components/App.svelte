@@ -50,6 +50,7 @@
       font-family: monospace;
       font-style: italic;
       font-size: 6rem;
+      text-shadow: 0px 4px #8383834d;
     }
   }
 
