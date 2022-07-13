@@ -1,25 +1,29 @@
 export class Sounds {
-  private readonly library = new Map<string, unknown>();
-  private player = new Audio();
+  private readonly soundTracks = new Map<string, string>();
+  private readonly players = new Map<string, HTMLAudioElement>();
 
   constructor() {
-    const eat = require('./../sounds/eat.wav');
-    const bump = require('./../sounds/bump.wav');
+    this.soundTracks.set('eat', 'eat.wav');
+    this.soundTracks.set('bump', 'bump.wav');
 
-    this.library.set('eat', eat);
-    this.library.set('bump', bump);
+    this.soundTracks.forEach((fileName, track) => {
+      const player = new Audio();
+      const audio = require(`./../sounds/${fileName}`);
+      player.src = audio;
+      player.muted = false;
+      this.players.set(track, player);
+    });
   }
 
   eat() {
-    this.playSound(this.library.get('eat'));
+    this.playSound('eat');
   }
 
   bump() {
-    this.playSound(this.library.get('bump'));
+    this.playSound('bump');
   }
 
   private playSound(audio) {
-    this.player.src = audio;
-    this.player.play();
+    this.players.get(audio).play();
   }
 }
