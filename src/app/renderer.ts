@@ -179,8 +179,10 @@ export class GameRenderer {
     snakeDirection: Direction,
     fieldCenter: Position
   ) {
-    const eyeOffset = 6;
-    const radius = 5;
+    const eyeOffset = fieldWidth / 7;
+    const radius = fieldWidth / 7;
+    const pupilOffset = fieldWidth / 15;
+
     let x,
       y,
       eye1x,
@@ -192,7 +194,7 @@ export class GameRenderer {
       eye2Pupilx,
       eye2Pupily;
 
-    let rotation: 1 | 2 | 3 | 4;
+    let rotation: 1 | 2;
     switch (snakeDirection) {
       case 'right': {
         x =
@@ -201,7 +203,7 @@ export class GameRenderer {
           distancePerFrameX * frameIndex;
         y = snakePart.y * fieldHeight + fieldCenter.y;
         eye1x = eye2x = x - eyeOffset;
-        eye1Pupilx = eye2Pupilx = eye1x + 2;
+        eye1Pupilx = eye2Pupilx = eye1x + pupilOffset;
         eye1y = eye1Pupily = y - eyeOffset;
         eye2y = eye2Pupily = y + eyeOffset;
         rotation = 1;
@@ -214,7 +216,7 @@ export class GameRenderer {
           distancePerFrameX * frameIndex;
         y = snakePart.y * fieldHeight + fieldCenter.y;
         eye1x = eye2x = x + eyeOffset;
-        eye1Pupilx = eye2Pupilx = eye1x - 2;
+        eye1Pupilx = eye2Pupilx = eye1x - pupilOffset;
         eye1y = eye1Pupily = y - eyeOffset;
         eye2y = eye2Pupily = y + eyeOffset;
         rotation = 1;
@@ -229,7 +231,7 @@ export class GameRenderer {
         eye1x = eye1Pupilx = x - eyeOffset;
         eye2x = eye2Pupilx = x + eyeOffset;
         eye1y = eye2y = y + eyeOffset;
-        eye1Pupily = eye2Pupily = eye1y - 2;
+        eye1Pupily = eye2Pupily = eye1y - pupilOffset;
         rotation = 2;
         break;
       }
@@ -242,17 +244,18 @@ export class GameRenderer {
         eye1x = eye1Pupilx = x - eyeOffset;
         eye2x = eye2Pupilx = x + eyeOffset;
         eye1y = eye2y = y - eyeOffset;
-        eye1Pupily = eye2Pupily = eye1y + 2;
+        eye1Pupily = eye2Pupily = eye1y + pupilOffset;
         rotation = 2;
         break;
       }
     }
 
     if (this.game.currentGameState.gameOver) {
-      eye1Pupilx = eye1Pupilx + 2;
-      eye1Pupily = eye1Pupily + 2;
-      eye2Pupilx = eye2Pupilx - 2;
-      eye2Pupily = eye2Pupily - 2;
+      const deadPupilsOffset = pupilOffset / 2;
+      eye1Pupilx = eye1Pupilx - deadPupilsOffset;
+      eye1Pupily = eye1Pupily - deadPupilsOffset;
+      eye2Pupilx = eye2Pupilx + deadPupilsOffset;
+      eye2Pupily = eye2Pupily + deadPupilsOffset;
     }
 
     this.ctx.beginPath();
