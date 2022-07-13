@@ -99,6 +99,10 @@ const config: Configuration = {
       meta: {
         viewport:
           'user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1',
+        screenOrientation: {
+          httpEquiv: 'ScreenOrientation',
+          content: 'autoRotate:disabled',
+        },
       },
       favicon: 'img/favicon.ico',
     }),
