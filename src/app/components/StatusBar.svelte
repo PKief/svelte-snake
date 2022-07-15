@@ -53,7 +53,7 @@
 
 <style>
   .app-bar {
-    background-color: #43a047;
+    background-color: #43a047b5;
     display: flex;
     justify-content: space-between;
     align-items: center;

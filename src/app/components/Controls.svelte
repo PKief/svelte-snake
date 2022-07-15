@@ -21,6 +21,6 @@
 <style>
   .controls {
     padding: 10px;
-    background-color: #66bb6a;
+    background-color: #66bb6ade;
   }
 </style>
