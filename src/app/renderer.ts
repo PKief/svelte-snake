@@ -5,6 +5,8 @@ import { ContextPath2D, Direction } from './types';
 export class GameRenderer {
   private ctx: ContextPath2D;
   private game: Game;
+  private angle = 0;
+  private scale = 1;
 
   constructor(game: Game, ctx: ContextPath2D) {
     this.game = game;
@@ -17,6 +19,8 @@ export class GameRenderer {
     let snakeParts: Position[];
 
     return () => {
+      this.updateScale();
+
       switch (this.game.currentGameState.status) {
         case 'initial': {
           snakeDirection = this.game.snake.direction;
@@ -86,14 +90,33 @@ export class GameRenderer {
   }
 
   private drawFood(fieldWidth: number, fieldHeight: number) {
-    this.ctx.fillStyle = '#ef5350';
-    this.ctx.font = `${fieldHeight / 1.5}px Arial`;
+    this.ctx.beginPath();
+
+    const foodApple = require('../img/food-apple.svg');
+    const img = new Image();
+    img.src = foodApple;
+
+    const foodWidth = fieldWidth * 0.65;
+    const foodHeight = fieldHeight * 0.65;
+
+    const foodX =
+      this.game.food.position.x * fieldWidth + fieldWidth / 2 - foodWidth / 2;
+    const foodY =
+      this.game.food.position.y * fieldHeight +
+      fieldHeight / 2 -
+      foodHeight / 2;
+
+    const anchorX = foodX + foodWidth / 2,
+      anchorY = foodY + foodHeight / 2;
+    const scaledX = anchorX - anchorX * this.scale,
+      scaledY = anchorY - anchorY * this.scale;
+
+    this.ctx.setTransform(this.scale, 0, 0, this.scale, scaledX, scaledY);
+
     this.addShadowToContext();
-    this.ctx.fillText(
-      '🍎',
-      this.game.food.position.x * fieldWidth + fieldWidth * 0.05,
-      this.game.food.position.y * fieldHeight + fieldHeight * 0.75
-    );
+    this.ctx.drawImage(img, foodX, foodY, foodWidth, foodHeight);
+    this.ctx.closePath();
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
   private addShadowToContext() {
@@ -425,5 +448,10 @@ export class GameRenderer {
       this.ctx.canvas.clientWidth,
       this.ctx.canvas.clientHeight
     );
+  }
+
+  private updateScale() {
+    this.angle += Math.PI / 100;
+    this.scale = 0.75 + Math.abs(Math.cos(this.angle)) * 0.25;
   }
 }
