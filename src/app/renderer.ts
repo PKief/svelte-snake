@@ -92,10 +92,6 @@ export class GameRenderer {
   private drawFood(fieldWidth: number, fieldHeight: number) {
     this.ctx.beginPath();
 
-    const foodApple = require('../img/food-apple.svg');
-    const img = new Image();
-    img.src = foodApple;
-
     const foodWidth = fieldWidth * 0.65;
     const foodHeight = fieldHeight * 0.65;
 
@@ -114,7 +110,13 @@ export class GameRenderer {
     this.ctx.setTransform(this.scale, 0, 0, this.scale, scaledX, scaledY);
 
     this.addShadowToContext();
-    this.ctx.drawImage(img, foodX, foodY, foodWidth, foodHeight);
+    this.ctx.drawImage(
+      this.game.food.image,
+      foodX,
+      foodY,
+      foodWidth,
+      foodHeight
+    );
     this.ctx.closePath();
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
