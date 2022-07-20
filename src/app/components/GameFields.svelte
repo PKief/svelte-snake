@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext, onMount } from 'svelte';
-  import { GameRenderer } from './../renderer';
+  import { GameRenderer } from '../rendering';
   import { ContextPath2D } from './../types';
   const { getGame } = getContext('game');
 
