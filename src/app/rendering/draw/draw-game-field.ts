@@ -1,4 +1,4 @@
-import { ContextPath2D } from 'src/app/types';
+import { ContextPath2D } from '../../types';
 
 export const drawGameFields =
   (ctx: ContextPath2D) =>
