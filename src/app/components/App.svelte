@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setContext } from 'svelte';
   import '../../styles/styles.scss';
-  import { Game } from '../game';
+  import { Game } from '../logic/game';
   import Controls from './Controls.svelte';
   import GameFields from './GameFields.svelte';
   import StatusBar from './StatusBar.svelte';

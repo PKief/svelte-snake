@@ -11,7 +11,7 @@ export class Food {
   }
 
   private loadFoodImage() {
-    const foodApple = require('../img/food-apple.svg');
+    const foodApple = require('../../img/food-apple.svg');
     const img = new Image();
     img.src = foodApple;
     this.image = img;

@@ -1,5 +1,5 @@
+import { Direction } from '../types';
 import { Position } from './position';
-import { Direction } from './types';
 
 export class Snake {
   size: number = 2;

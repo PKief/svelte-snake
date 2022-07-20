@@ -1,5 +1,5 @@
-import { Game } from './game';
-import { Position } from './position';
+import { Game } from './logic/game';
+import { Position } from './logic/position';
 import { ContextPath2D, Direction } from './types';
 
 export class GameRenderer {

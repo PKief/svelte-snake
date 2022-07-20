@@ -1,10 +1,10 @@
 import { BehaviorSubject } from 'rxjs';
+import { Sounds } from '../sounds';
+import { gameState } from '../stores';
+import { GameConfig, GameState } from '../types';
 import { Food } from './food';
 import { Position } from './position';
 import { Snake } from './snake';
-import { Sounds } from './sounds';
-import { gameState } from './stores';
-import { GameConfig, GameState } from './types';
 
 export class Game {
   config: GameConfig;

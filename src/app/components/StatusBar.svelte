@@ -27,7 +27,8 @@
   <div class="app-bar">
     <div class="scores">
       <span class="food-score">
-        🍎 {$gameState.score}
+        <img src={game.food.image.src} alt="Food" />
+        {$gameState.score}
       </span>
       <span class="food-score">
         🏆 {$gameState.highScore}
@@ -51,12 +52,16 @@
   </div>
 {/if}
 
-<style>
+<style lang="scss">
   .app-bar {
     background-color: #43a047b5;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 0.5rem;
+
+    .food-score > img {
+      width: 1rem;
+    }
   }
 </style>
