@@ -62,6 +62,7 @@ export class Game {
     gameState.update((state) => ({
       ...state,
       status: 'initial',
+      gameOver: false,
     }));
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
