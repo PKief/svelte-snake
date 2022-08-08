@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { Sounds } from '../sounds';
+import { Storage } from '../storage';
 import { gameState } from '../stores';
 import { GameConfig, GameState } from '../types';
 import { Food } from './food';
@@ -13,10 +14,9 @@ export class Game {
   sounds: Sounds;
 
   private readonly snakeStartPosition = new Position(1, 1);
-
   private readonly snakeStartSize = 3;
-
   private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
+  private readonly storage = new Storage();
 
   get currentGameState() {
     return this.gameState$.value;
@@ -32,6 +32,7 @@ export class Game {
       this.gameState$.next(gameState);
     });
 
+    this.updateHighScore(this.storage.highScore);
     this.generateRandomFoodPosition();
   }
 
@@ -67,8 +68,6 @@ export class Game {
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
     this.generateRandomFoodPosition();
-    const currentScore = this.gameState$.value.score;
-    this.updateHighScore(currentScore);
     this.updateScore(0);
   }
 
@@ -138,6 +137,7 @@ export class Game {
       gameOver: true,
       status: 'stopped',
     }));
+    this.storage.highScore = this.currentGameState.highScore;
   }
 
   private generateRandomFoodPosition() {
