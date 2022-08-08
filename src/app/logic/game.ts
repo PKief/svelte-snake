@@ -59,13 +59,16 @@ export class Game {
 
   restart(): void {
     this.stop();
+    gameState.update((state) => ({
+      ...state,
+      status: 'initial',
+    }));
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
     this.generateRandomFoodPosition();
     const currentScore = this.gameState$.value.score;
     this.updateHighScore(currentScore);
     this.updateScore(0);
-    this.start();
   }
 
   moveSnake() {
@@ -132,6 +135,7 @@ export class Game {
     gameState.update((state) => ({
       ...state,
       gameOver: true,
+      status: 'stopped',
     }));
   }
 

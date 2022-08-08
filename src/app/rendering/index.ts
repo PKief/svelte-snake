@@ -23,10 +23,11 @@ export class GameRenderer {
     let snakeParts: Position[];
 
     return () => {
-      this.updateScale();
+      this.updateAnimationScale();
 
       switch (this.game.currentGameState.status) {
         case 'initial': {
+          remainingFrames = 0;
           snakeDirection = this.game.snake.direction;
           snakeParts = this.game.snake.parts;
           break;
@@ -87,7 +88,7 @@ export class GameRenderer {
     );
   }
 
-  private updateScale() {
+  private updateAnimationScale() {
     this.angleForAnimationScale += Math.PI / 100;
     this.animationScale =
       0.75 + Math.abs(Math.cos(this.angleForAnimationScale)) * 0.25;
