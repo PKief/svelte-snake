@@ -24,8 +24,16 @@ export class Snake {
     this.parts.push(this.parts[this.parts.length - 1]);
   }
 
-  switchDirection(direction: Direction): void {
-    this.direction = direction;
+  switchDirection(nextDirection: Direction): void {
+    const isNotOppositeDirection =
+      (nextDirection === 'down' && this.direction !== 'up') ||
+      (nextDirection === 'up' && this.direction !== 'down') ||
+      (nextDirection === 'left' && this.direction !== 'right') ||
+      (nextDirection === 'right' && this.direction !== 'left');
+
+    if (isNotOppositeDirection) {
+      this.direction = nextDirection;
+    }
   }
 
   move(): void {
