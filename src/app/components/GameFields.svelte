@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getContext, onMount } from 'svelte';
+  import { Game } from '../logic/game';
   import { GameRenderer } from '../rendering';
   import { ContextPath2D } from './../types';
   const { getGame } = getContext('game');
@@ -7,14 +8,13 @@
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
-    const game = getGame();
+    const game = getGame() as Game;
     const ctx = canvas.getContext('2d');
     const renderer = new GameRenderer(game, ctx as ContextPath2D);
 
-    const fps = 15;
-    const fpsInterval = 20 / fps;
+    const fpsInterval = 1;
     let then = window.performance.now();
-    const renderContext = renderer.getRenderingContext(fps);
+    const renderContext = renderer.getRenderingContext();
 
     const loop = (t) => {
       frame = requestAnimationFrame(loop);

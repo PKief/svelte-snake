@@ -17,7 +17,8 @@ export class GameRenderer {
     this.ctx = ctx;
   }
 
-  getRenderingContext(fps: number) {
+  getRenderingContext() {
+    const speed = this.game.config.speed;
     let remainingFrames = 0;
     let snakeDirection: Direction;
     let snakeParts: Position[];
@@ -34,7 +35,7 @@ export class GameRenderer {
         }
         case 'playing': {
           if (remainingFrames === 0) {
-            remainingFrames = fps;
+            remainingFrames = speed;
             snakeParts = this.game.snake.parts;
             snakeDirection = this.game.snake.direction;
             this.game.moveSnake();
@@ -44,12 +45,12 @@ export class GameRenderer {
         }
       }
 
-      this.renderGame(fps, remainingFrames, snakeDirection, snakeParts);
+      this.renderGame(speed, remainingFrames, snakeDirection, snakeParts);
     };
   }
 
   private renderGame(
-    fps: number,
+    speed: number,
     remainingFrames: number,
     snakeDirection: Direction,
     snakeParts: Position[]
@@ -57,12 +58,12 @@ export class GameRenderer {
     const fieldWidth = this.ctx.canvas.width / this.game.config.gridSize;
     const fieldHeight = this.ctx.canvas.height / this.game.config.gridSize;
 
-    const distancePerFrameX = fieldWidth / fps;
-    const distancePerFrameY = fieldHeight / fps;
+    const distancePerFrameX = fieldWidth / speed;
+    const distancePerFrameY = fieldHeight / speed;
     const frameIndex =
       this.game.currentGameState.status === 'initial'
         ? 0
-        : fps - remainingFrames;
+        : speed - remainingFrames;
 
     clearCanvas(this.ctx);
     drawGameFields(this.ctx)(

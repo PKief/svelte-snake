@@ -2,6 +2,7 @@ export type Direction = 'up' | 'down' | 'left' | 'right';
 
 export type GameConfig = {
   gridSize: number;
+  speed: number;
 };
 
 export type GameState = {

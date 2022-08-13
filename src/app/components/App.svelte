@@ -7,8 +7,11 @@
   import StatusBar from './StatusBar.svelte';
 
   const gridSize = 10;
+  const speed = 15;
+
   const game = new Game({
     gridSize,
+    speed,
   });
   setContext('game', {
     getGame: () => game,
