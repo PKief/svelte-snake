@@ -37,7 +37,7 @@ export class GameRenderer {
           if (remainingFrames === 0) {
             remainingFrames = speed;
             snakeParts = this.game.snake.parts;
-            snakeDirection = this.game.snake.direction;
+            snakeDirection = this.game.snake.nextDirection;
             this.game.moveSnake();
           }
           remainingFrames--;

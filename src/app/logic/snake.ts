@@ -4,7 +4,7 @@ import { Position } from './position';
 export class Snake {
   size: number = 2;
   parts: Position[] = [];
-  direction: Direction = 'right';
+  private directionsQueue: Direction[] = ['right'];
 
   get head(): Position {
     return this.parts[0];
@@ -12,6 +12,17 @@ export class Snake {
 
   get tail(): Position {
     return this.parts[this.parts.length - 1];
+  }
+
+  get nextDirection() {
+    if (this.directionsQueue.length > 1) {
+      this.directionsQueue.shift();
+    }
+    return this.directionsQueue[0];
+  }
+
+  get direction() {
+    return this.directionsQueue[0];
   }
 
   constructor(startPosition: Position, size?: number) {
@@ -25,14 +36,16 @@ export class Snake {
   }
 
   switchDirection(nextDirection: Direction): void {
+    const latestDirectionInQueue =
+      this.directionsQueue[this.directionsQueue.length - 1];
     const isNotOppositeDirection =
-      (nextDirection === 'down' && this.direction !== 'up') ||
-      (nextDirection === 'up' && this.direction !== 'down') ||
-      (nextDirection === 'left' && this.direction !== 'right') ||
-      (nextDirection === 'right' && this.direction !== 'left');
+      (nextDirection === 'down' && latestDirectionInQueue !== 'up') ||
+      (nextDirection === 'up' && latestDirectionInQueue !== 'down') ||
+      (nextDirection === 'left' && latestDirectionInQueue !== 'right') ||
+      (nextDirection === 'right' && latestDirectionInQueue !== 'left');
 
     if (isNotOppositeDirection) {
-      this.direction = nextDirection;
+      this.directionsQueue.push(nextDirection);
     }
   }
 
