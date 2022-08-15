@@ -38,7 +38,7 @@ const config: Configuration = {
               dev: devMode,
             },
             emitCss: !devMode,
-            hotReload: devMode,
+            hotReload: false,
             hotOptions: {
               // List of options and defaults: https://www.npmjs.com/package/svelte-loader-hot#usage
               noPreserveState: false,

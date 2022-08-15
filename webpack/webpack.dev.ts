@@ -5,6 +5,9 @@ import common from './webpack.common';
 const config: Configuration = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
+  optimization: {
+    runtimeChunk: 'single',
+  },
 });
 
 export default config;
