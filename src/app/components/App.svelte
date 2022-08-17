@@ -41,6 +41,7 @@
     justify-content: center;
     align-items: center;
     background: linear-gradient(-45deg, #c5e1a5, #ef9a9a, #9fa8da, #cddc39);
+    color: white;
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
 
