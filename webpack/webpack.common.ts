@@ -1,4 +1,5 @@
 import Autoprefixer from 'autoprefixer';
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { resolve } from 'path';
@@ -13,7 +14,6 @@ const config: Configuration = {
   context: resolve(__dirname, '../src'),
   resolve: {
     alias: {
-      // Note: Later in this config file, we'll automatically add paths from `tsconfig.compilerOptions.paths`
       svelte: resolve('node_modules', 'svelte'),
     },
     extensions: ['.mjs', '.js', '.ts', '.svelte', 'scss'],
@@ -27,23 +27,16 @@ const config: Configuration = {
   },
   module: {
     rules: [
-      // Rule: Svelte
       {
         test: /\.svelte$/,
         use: {
           loader: 'svelte-loader',
           options: {
             compilerOptions: {
-              // Dev mode must be enabled for HMR to work!
               dev: devMode,
             },
             emitCss: !devMode,
             hotReload: false,
-            hotOptions: {
-              // List of options and defaults: https://www.npmjs.com/package/svelte-loader-hot#usage
-              noPreserveState: false,
-              optimistic: true,
-            },
             preprocess: SveltePreprocess({
               scss: true,
               sass: true,
@@ -78,16 +71,15 @@ const config: Configuration = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2|wav)$/i,
-        // More information here https://webpack.js.org/guides/asset-modules/
         type: 'asset/resource',
       },
     ],
   },
   plugins: [
-    // new HotModuleReplacementPlugin(),
-    // new FaviconsWebpackPlugin({
-    //   logo: './img/logo.png',
-    // }),
+    new FaviconsWebpackPlugin({
+      mode: 'light',
+      logo: './img/logo.png',
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       title: 'Snake',
@@ -100,7 +92,6 @@ const config: Configuration = {
           content: 'autoRotate:disabled',
         },
       },
-      favicon: 'img/favicon.ico',
     }),
     new MiniCssExtractPlugin(),
   ],

@@ -43,11 +43,9 @@
   },
   "dependencies": {
     "@smui/icon-button": "^6.0.0-beta.16",
-    "@smui/top-app-bar": "^6.0.0-beta.16",
     "canvas-roundrect-polyfill": "^0.0.1",
     "material-icons": "^1.11.2",
     "rxjs": "^7.5.5",
-    "svelte-gestures": "^1.4.1",
-    "svelte-material-ui": "^6.0.0-beta.16"
+    "svelte-gestures": "^1.4.1"
   }
 }
