@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    <img src="logo.png" alt="Game logo" width="200">
+    <img src="./src/img/logo.png" alt="Game logo" width="200">
   <br><br>
   Snake
   <br>
