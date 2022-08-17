@@ -11,7 +11,7 @@
 
 ## Game instructions
 
-By either pressing one of the arrow keys on the keyboard or by using swipe gestures on a mobile device the Snake is starting to move. In the same way, the direction of the snake can be changed while it is moving. Since the snake is hungry, it would like to eat as many apples as possible. Each apple eaten makes the snake a little bigger, which also restricts the freedom of movement. The goal is to swallow as many apples as possible.
+By either pressing one of the arrow keys on the keyboard or by using swipe gestures on a mobile device the Snake is starting to move. In the same way, the direction of the snake can be changed while it is moving. Since the snake is hungry, it would like to eat as many items as possible. Each item eaten makes the snake a little bigger, which also restricts the freedom of movement. The goal is to swallow as many items as possible.
 
 ## Technological background
 
