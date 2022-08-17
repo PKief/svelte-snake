@@ -3,6 +3,7 @@
   import '../../styles/styles.scss';
   import { Game } from '../logic/game';
   import Controls from './Controls.svelte';
+  import Footer from './Footer.svelte';
   import GameFields from './GameFields.svelte';
   import StatusBar from './StatusBar.svelte';
 
@@ -29,6 +30,7 @@
         <GameFields />
       </Controls>
     </main>
+    <Footer />
   </div>
 </div>
 
@@ -40,7 +42,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(-45deg, #c5e1a5, #ef9a9a, #9fa8da, #cddc39);
+    background: linear-gradient(-45deg, #0d0d0e, #144934, #143526, #0c5533);
     color: white;
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
@@ -59,6 +61,7 @@
       font-size: 4rem;
       padding: 2rem 0;
       margin: 0;
+      color: rgba(238, 238, 238, 0.5);
       text-shadow: 0px 4px #8383834d;
     }
   }
