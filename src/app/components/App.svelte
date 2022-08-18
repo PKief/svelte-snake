@@ -45,7 +45,6 @@
     background: linear-gradient(-45deg, #0d0d0e, #144934, #143526, #0c5533);
     color: white;
     background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
 
     .app-context {
       max-width: 500px;
@@ -61,8 +60,7 @@
       font-size: 4rem;
       padding: 2rem 0;
       margin: 0;
-      color: rgba(238, 238, 238, 0.5);
-      text-shadow: 0px 4px #8383834d;
+      color: rgba(238, 238, 238, 0.75);
     }
   }
 
@@ -72,18 +70,6 @@
 
     @media (min-width: 640px) {
       max-width: none;
-    }
-  }
-
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
     }
   }
 </style>
