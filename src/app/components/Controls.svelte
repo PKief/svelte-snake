@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from 'svelte';
   import { swipe } from 'svelte-gestures';
-  import { Controls } from '../controls';
+  import { Controls } from '../services';
 
   const { getGame } = getContext('game');
   const game = getGame();

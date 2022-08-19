@@ -1,6 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { Storage } from '../services/storage';
-import { Sounds } from '../sounds';
+import { Sounds } from '../services';
 import { gameState } from '../stores';
 import { GameConfig, GameState } from '../types';
 import { Food } from './food';
@@ -11,12 +10,12 @@ export class Game {
   config: GameConfig;
   food: Food;
   snake: Snake;
-  sounds: Sounds;
 
   private readonly snakeStartPosition = new Position(1, 1);
   private readonly snakeStartSize = 3;
   private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
   private readonly storage = new Storage();
+  private readonly sounds: Sounds;
 
   get currentGameState() {
     return this.gameState$.value;

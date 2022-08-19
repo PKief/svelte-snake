@@ -1,4 +1,4 @@
-import { Game } from './logic/game';
+import { Game } from './../logic/game';
 
 type SwipeEvent = {
   direction: 'top' | 'right' | 'bottom' | 'left';

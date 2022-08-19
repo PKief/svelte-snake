@@ -8,7 +8,7 @@ export class Sounds {
 
     this.soundTracks.forEach((fileName, track) => {
       const player = new Audio();
-      const audio = require(`./../sounds/${fileName}`);
+      const audio = require(`./../../sounds/${fileName}`);
       player.src = audio;
       player.muted = false;
       this.players.set(track, player);
