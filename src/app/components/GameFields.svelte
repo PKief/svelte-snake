@@ -1,14 +1,13 @@
 <script lang="ts">
-  import { getContext, onMount } from 'svelte';
-  import { Game } from '../logic/game';
+  import { onMount } from 'svelte';
+  import { getAppContext } from '../core/context';
   import { GameRenderer } from '../rendering';
   import { ContextPath2D } from './../types';
-  const { getGame } = getContext('game');
+  const game = getAppContext('game');
 
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
-    const game = getGame() as Game;
     const ctx = canvas.getContext('2d');
     const renderer = new GameRenderer(game, ctx as ContextPath2D);
 

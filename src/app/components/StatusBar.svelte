@@ -1,10 +1,9 @@
 <script lang="ts">
   import IconButton from '@smui/icon-button';
-  import { getContext } from 'svelte';
+  import { getAppContext } from '../core/context';
   import { gameState } from '../stores';
 
-  const { getGame } = getContext('game');
-  const game = getGame();
+  const game = getAppContext('game');
 
   const startGame = () => {
     game.start();

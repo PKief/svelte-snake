@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { setContext } from 'svelte';
   import '../../styles/styles.scss';
+  import { setAppContext } from '../core/context';
   import { Game } from '../logic/game';
   import Controls from './Controls.svelte';
   import Footer from './Footer.svelte';
@@ -14,7 +14,7 @@
     gridSize,
     speed,
   });
-  setContext('game', {
+  setAppContext('game', {
     getGame: () => game,
   });
 </script>

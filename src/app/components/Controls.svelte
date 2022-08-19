@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { getContext } from 'svelte';
   import { swipe } from 'svelte-gestures';
+  import { getAppContext } from '../core/context';
   import { Controls } from '../services';
 
-  const { getGame } = getContext('game');
-  const game = getGame();
+  const game = getAppContext('game');
   const gameControls = new Controls(game);
 </script>
 
