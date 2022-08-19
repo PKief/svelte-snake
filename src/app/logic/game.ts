@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
+import { Storage } from '../services/storage';
 import { Sounds } from '../sounds';
-import { Storage } from '../storage';
 import { gameState } from '../stores';
 import { GameConfig, GameState } from '../types';
 import { Food } from './food';
