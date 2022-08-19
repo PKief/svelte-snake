@@ -5,7 +5,9 @@ export type AppContext = {
   game: Game;
 };
 
-type ContextGetMethodName<S extends keyof AppContext> = `get${Capitalize<S>}`;
+type ContextMethodPrefix = 'get';
+type ContextGetMethodName<S extends keyof AppContext> =
+  `${ContextMethodPrefix}${Capitalize<S>}`;
 type ContextMethod<S extends keyof AppContext> = () => AppContext[S];
 type ContextValue<S extends keyof AppContext> = Record<
   ContextGetMethodName<S>,
@@ -16,10 +18,12 @@ const capitalizeFirstLetter = (value: string) => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
-export const getAppContext = <S extends keyof AppContext>(key: S) =>
-  (getContext(key) as ContextValue<S>)[
-    'get' + capitalizeFirstLetter(key)
+export const getAppContext = <S extends keyof AppContext>(key: S) => {
+  const prefix: ContextMethodPrefix = 'get';
+  return (getContext(key) as ContextValue<S>)[
+    prefix + capitalizeFirstLetter(key)
   ]() as AppContext[S];
+};
 
 export const setAppContext = <S extends keyof AppContext>(
   key: S,
