@@ -1,4 +1,5 @@
-import { Game } from './../logic/game';
+import { getAppContext } from '../core/context';
+import { Game } from '../logic/game';
 
 type SwipeEvent = {
   direction: 'top' | 'right' | 'bottom' | 'left';
@@ -9,8 +10,12 @@ type SwipeDirection = 'top' | 'right' | 'bottom' | 'left';
 type KeyboardDirection = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 type KeyboardDirection2 = 'w' | 'a' | 's' | 'd';
 
-export class Controls {
-  constructor(private game: Game) {}
+export class ControlService {
+  private readonly game: Game;
+
+  constructor() {
+    this.game = getAppContext('game');
+  }
 
   handleKeydown() {
     return (event: KeyboardEvent) => {

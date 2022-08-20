@@ -1,4 +1,4 @@
-export class Sounds {
+export class SoundService {
   private readonly soundTracks = new Map<string, string>();
   private readonly players = new Map<string, HTMLAudioElement>();
 

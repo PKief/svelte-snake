@@ -2,7 +2,7 @@ type StorageData = {
   highScore: number;
 };
 
-export class Storage {
+export class StorageService {
   private readonly storageKey = 'svelte-snake-game';
   private storageData: StorageData | undefined;
 
