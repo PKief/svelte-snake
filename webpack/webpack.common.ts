@@ -79,6 +79,7 @@ const config: Configuration = {
       inject: true,
       title: 'Snake',
       hash: true,
+      favicon: './img/logo.png',
       meta: {
         viewport:
           'user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1',
