@@ -1,5 +1,4 @@
 import Autoprefixer from 'autoprefixer';
-import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { resolve } from 'path';
@@ -76,10 +75,6 @@ const config: Configuration = {
     ],
   },
   plugins: [
-    new FaviconsWebpackPlugin({
-      mode: 'light',
-      logo: './img/logo.png',
-    }),
     new HtmlWebpackPlugin({
       inject: true,
       title: 'Snake',
