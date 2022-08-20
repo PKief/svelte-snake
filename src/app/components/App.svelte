@@ -1,11 +1,13 @@
 <script lang="ts">
   import '../../styles/styles.scss';
-  import { setAppContext } from '../core/context';
+  import { provideServicesForContext, setAppContext } from '../core';
   import { Game } from '../logic/game';
   import Controls from './Controls.svelte';
   import Footer from './Footer.svelte';
   import GameFields from './GameFields.svelte';
   import StatusBar from './StatusBar.svelte';
+
+  provideServicesForContext();
 
   const gridSize = 10;
   const speed = 15;
@@ -14,9 +16,7 @@
     gridSize,
     speed,
   });
-  setAppContext('game', {
-    getGame: () => game,
-  });
+  setAppContext('game', { getGame: () => game });
 </script>
 
 <div class="app-container">

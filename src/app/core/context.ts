@@ -1,8 +1,12 @@
 import { getContext, setContext } from 'svelte';
 import { Game } from '../logic/game';
+import { ControlService, SoundService, StorageService } from '../services';
 
 export type AppContext = {
   game: Game;
+  soundService: SoundService;
+  storageService: StorageService;
+  controlService: ControlService;
 };
 
 type ContextMethodPrefix = 'get';

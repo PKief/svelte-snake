@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { SoundService, StorageService } from '../services';
+import { getAppContext } from '../core';
 import { gameState } from '../stores';
 import { GameConfig, GameState } from '../types';
 import { Food } from './food';
@@ -14,8 +14,8 @@ export class Game {
   private readonly snakeStartPosition = new Position(1, 1);
   private readonly snakeStartSize = 3;
   private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
-  private readonly storage = new StorageService();
-  private readonly sounds = new SoundService();
+  private readonly storage;
+  private readonly sounds;
 
   get currentGameState() {
     return this.gameState$.value;
@@ -25,6 +25,8 @@ export class Game {
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
     this.food = new Food(new Position(0, 0));
     this.config = config;
+    this.sounds = getAppContext('soundService');
+    this.storage = getAppContext('storageService');
 
     gameState.subscribe((gameState) => {
       this.gameState$.next(gameState);

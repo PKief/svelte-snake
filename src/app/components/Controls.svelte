@@ -1,8 +1,8 @@
 <script lang="ts">
   import { swipe } from 'svelte-gestures';
-  import { ControlService } from '../services';
+  import { getAppContext } from '../core';
 
-  const gameControls = new ControlService();
+  const gameControls = getAppContext('controlService');
 </script>
 
 <svelte:window on:keydown={gameControls.handleKeydown()} />

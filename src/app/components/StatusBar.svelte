@@ -1,6 +1,6 @@
 <script lang="ts">
   import IconButton from '@smui/icon-button';
-  import { getAppContext } from '../core/context';
+  import { getAppContext } from '../core';
   import { gameState } from '../stores';
 
   const game = getAppContext('game');

@@ -1,4 +1,4 @@
-import { getAppContext } from '../core/context';
+import { getAppContext } from '../core';
 import { Game } from '../logic/game';
 
 type SwipeEvent = {
