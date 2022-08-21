@@ -1,5 +1,6 @@
 import { getAppContext } from '../core';
 import { Game } from '../logic/game';
+import { Direction } from '../types';
 
 type SwipeEvent = {
   direction: 'top' | 'right' | 'bottom' | 'left';
@@ -38,29 +39,32 @@ export class ControlService {
   private handleControlInput(
     input: KeyboardDirection | KeyboardDirection2 | SwipeDirection
   ) {
-    this.initiallyStartGame();
-
     switch (input) {
       case 'ArrowUp':
       case 'w':
       case 'top':
-        this.game.snake.switchDirection('up');
+        this.switchDirection('up');
         break;
       case 'ArrowDown':
       case 's':
       case 'bottom':
-        this.game.snake.switchDirection('down');
+        this.switchDirection('down');
         break;
       case 'ArrowLeft':
       case 'a':
       case 'left':
-        this.game.snake.switchDirection('left');
+        this.switchDirection('left');
         break;
       case 'ArrowRight':
       case 'd':
       case 'right':
-        this.game.snake.switchDirection('right');
+        this.switchDirection('right');
         break;
     }
+  }
+
+  private switchDirection(direction: Direction) {
+    this.initiallyStartGame();
+    this.game.snake.switchDirection(direction);
   }
 }
