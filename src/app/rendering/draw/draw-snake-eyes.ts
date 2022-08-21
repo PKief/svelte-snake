@@ -15,7 +15,7 @@ export const drawSnakeEyes =
     gameOver = false
   ) => {
     const eyeOffset = fieldWidth / 7;
-    const radius = fieldWidth / 7;
+    const radius = fieldWidth / 6;
     const pupilOffset = fieldWidth / 15;
 
     let x,

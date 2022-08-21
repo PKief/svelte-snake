@@ -23,7 +23,7 @@ export const drawSnake =
       y: fieldHeight * 0.5,
     };
     ctx.beginPath();
-    ctx.lineWidth = (fieldWidth + fieldHeight) / 5;
+    ctx.lineWidth = (fieldWidth + fieldHeight) / 4;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.strokeStyle = '#42a5f5';
