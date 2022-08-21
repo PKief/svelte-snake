@@ -1,5 +1,6 @@
 <script lang="ts">
   import IconButton from '@smui/icon-button';
+  import Tooltip, { Wrapper } from '@smui/tooltip';
   import { getAppContext } from '../core';
   import { gameState } from '../stores';
 
@@ -27,29 +28,49 @@
 {#if $gameState}
   <div class="app-bar">
     <div class="scores">
-      <span class="food-score">
-        <img src={game.food.image.src} alt={game.food.image.alt} />
-        {$gameState.score}
-      </span>
-      <span class="food-score">
-        <img src={scoreImage.src} alt={scoreImage.alt} />
-        {$gameState.highScore}
-      </span>
+      <Wrapper>
+        <span class="food-score">
+          <img src={game.food.image.src} alt={game.food.image.alt} />
+          {$gameState.score}
+        </span>
+        <Tooltip>Score</Tooltip>
+      </Wrapper>
+      <Wrapper>
+        <span class="food-score">
+          <img src={scoreImage.src} alt={scoreImage.alt} />
+          {$gameState.highScore}
+        </span>
+        <Tooltip>Highscore</Tooltip>
+      </Wrapper>
     </div>
     {#if $gameState.status === 'playing'}
-      <IconButton class="material-icons" on:click={pauseGame}>pause</IconButton>
+      <Wrapper>
+        <IconButton class="material-icons" on:click={pauseGame}
+          >pause</IconButton
+        >
+        <Tooltip>Pause</Tooltip>
+      </Wrapper>
     {:else if $gameState.status === 'paused'}
-      <IconButton class="material-icons" on:click={endPause}
-        >play_arrow</IconButton
-      >
+      <Wrapper>
+        <IconButton class="material-icons" on:click={endPause}
+          >play_arrow</IconButton
+        >
+        <Tooltip>Continue</Tooltip>
+      </Wrapper>
     {:else if $gameState.status === 'stopped'}
-      <IconButton class="material-icons" on:click={restartGame}
-        >replay</IconButton
-      >
+      <Wrapper>
+        <IconButton class="material-icons" on:click={restartGame}
+          >replay</IconButton
+        >
+        <Tooltip>Restart</Tooltip>
+      </Wrapper>
     {:else if $gameState.status === 'initial'}
-      <IconButton class="material-icons" on:click={startGame}
-        >play_arrow</IconButton
-      >
+      <Wrapper>
+        <IconButton class="material-icons" on:click={startGame}
+          >play_arrow</IconButton
+        >
+        <Tooltip>Start Game</Tooltip>
+      </Wrapper>
     {/if}
   </div>
 {/if}

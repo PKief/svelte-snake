@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@smui/icon-button": "^6.0.0-beta.16",
+    "@smui/tooltip": "^6.1.0",
     "canvas-roundrect-polyfill": "^0.0.1",
     "material-icons": "^1.11.2",
     "rxjs": "^7.5.5",
