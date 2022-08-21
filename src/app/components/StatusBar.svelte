@@ -60,10 +60,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0.5rem;
+    padding: 0.5rem 1rem;
 
-    .food-score > img {
-      width: 1rem;
+    .scores {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .food-score {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      font-size: 1.25rem;
+
+      & > img {
+        width: 1.75rem;
+      }
     }
   }
 </style>

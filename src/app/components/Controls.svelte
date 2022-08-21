@@ -17,7 +17,7 @@
 
 <style>
   .controls {
-    padding: 10px;
+    padding: 1rem;
     background-color: #66bb6ade;
   }
 </style>
