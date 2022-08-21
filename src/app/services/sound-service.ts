@@ -1,6 +1,8 @@
+type SoundName = 'eat' | 'bump';
+
 export class SoundService {
-  private readonly soundTracks = new Map<string, string>();
-  private readonly players = new Map<string, HTMLAudioElement>();
+  private readonly soundTracks = new Map<SoundName, string>();
+  private readonly players = new Map<SoundName, HTMLAudioElement>();
 
   constructor() {
     this.soundTracks.set('eat', 'eat.wav');
@@ -15,15 +17,7 @@ export class SoundService {
     });
   }
 
-  eat() {
-    this.playSound('eat');
-  }
-
-  bump() {
-    this.playSound('bump');
-  }
-
-  private playSound(audio) {
+  playSound(audio: SoundName) {
     this.players.get(audio).play();
   }
 }

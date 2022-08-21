@@ -1,19 +1,20 @@
+import { getAppContext } from '../core';
+import { ImageService } from '../services';
 import { Position } from './position';
 
 export class Food {
   position: Position;
-  image: CanvasImageSource;
+  image: HTMLImageElement;
+  private readonly imageService: ImageService;
 
   constructor(position: Position) {
     this.position = position;
+    this.imageService = getAppContext('imageService');
 
     this.loadFoodImage();
   }
 
   private loadFoodImage() {
-    const foodApple = require('../../img/food-apple.svg');
-    const img = new Image();
-    img.src = foodApple;
-    this.image = img;
+    this.image = this.imageService.getImage('apple');
   }
 }

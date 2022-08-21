@@ -1,4 +1,9 @@
-import { ControlService, SoundService, StorageService } from '../services';
+import {
+  ControlService,
+  ImageService,
+  SoundService,
+  StorageService,
+} from '../services';
 import { setAppContext } from './context';
 
 export const provideServicesForContext = () => {
@@ -10,5 +15,8 @@ export const provideServicesForContext = () => {
   });
   setAppContext('controlService', {
     getControlService: () => new ControlService(),
+  });
+  setAppContext('imageService', {
+    getImageService: () => new ImageService(),
   });
 };

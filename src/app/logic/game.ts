@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { getAppContext } from '../core';
+import { SoundService, StorageService } from '../services';
 import { gameState } from '../stores';
 import { GameConfig, GameState } from '../types';
 import { Food } from './food';
@@ -14,8 +15,8 @@ export class Game {
   private readonly snakeStartPosition = new Position(1, 1);
   private readonly snakeStartSize = 3;
   private readonly gameState$ = new BehaviorSubject<GameState>(undefined);
-  private readonly storage;
-  private readonly sounds;
+  private readonly storage: StorageService;
+  private readonly sounds: SoundService;
 
   get currentGameState() {
     return this.gameState$.value;
@@ -88,7 +89,7 @@ export class Game {
     );
 
     if (snakeHitsWall || snakeBitesItself) {
-      this.sounds.bump();
+      this.sounds.playSound('bump');
       this.endGame();
     }
 
@@ -97,7 +98,7 @@ export class Game {
       this.snake.head.y === this.food.position.y;
 
     if (snakeHitsFood) {
-      this.sounds.eat();
+      this.sounds.playSound('eat');
       this.snake.eatFood();
       const currentScore = this.gameState$.value.score;
       this.updateScore(currentScore + 1);

@@ -4,6 +4,8 @@
   import { gameState } from '../stores';
 
   const game = getAppContext('game');
+  const imageService = getAppContext('imageService');
+  const scoreImage = imageService.getImage('trophy');
 
   const startGame = () => {
     game.start();
@@ -26,11 +28,12 @@
   <div class="app-bar">
     <div class="scores">
       <span class="food-score">
-        <img src={game.food.image.src} alt="Food" />
+        <img src={game.food.image.src} alt={game.food.image.alt} />
         {$gameState.score}
       </span>
       <span class="food-score">
-        🏆 {$gameState.highScore}
+        <img src={scoreImage.src} alt={scoreImage.alt} />
+        {$gameState.highScore}
       </span>
     </div>
     {#if $gameState.status === 'playing'}
