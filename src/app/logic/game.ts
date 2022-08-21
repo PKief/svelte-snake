@@ -67,7 +67,6 @@ export class Game {
       gameOver: false,
     }));
     this.snake = new Snake(this.snakeStartPosition, this.snakeStartSize);
-    this.food = new Food(new Position(0, 0));
     this.generateRandomFoodPosition();
     this.updateScore(0);
   }
