@@ -1,3 +1,5 @@
+import { soundState } from '../stores';
+
 type SoundName = 'eat' | 'bump';
 
 export class SoundService {
@@ -15,9 +17,27 @@ export class SoundService {
       player.muted = false;
       this.players.set(track, player);
     });
+
+    this.addPlayersMuteSubscription();
+  }
+
+  private addPlayersMuteSubscription() {
+    soundState.subscribe((state) => {
+      this.players.forEach((player) => {
+        player.muted = state.muted;
+      });
+    });
   }
 
   playSound(audio: SoundName) {
     this.players.get(audio).play();
+  }
+
+  muteAllPlayers() {
+    soundState.update((state) => ({ ...state, muted: true }));
+  }
+
+  unmuteAllPlayers() {
+    soundState.update((state) => ({ ...state, muted: false }));
   }
 }

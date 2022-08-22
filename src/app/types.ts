@@ -35,3 +35,7 @@ export type ContextPath2D = CanvasRenderingContext2D & {
     radii: number[]
   ) => void;
 };
+
+export type SoundState = {
+  muted: boolean;
+};

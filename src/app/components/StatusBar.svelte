@@ -2,11 +2,12 @@
   import IconButton from '@smui/icon-button';
   import Tooltip, { Wrapper } from '@smui/tooltip';
   import { getAppContext } from '../core';
-  import { gameState } from '../stores';
+  import { gameState, soundState } from '../stores';
 
   const game = getAppContext('game');
   const imageService = getAppContext('imageService');
   const scoreImage = imageService.getImage('trophy');
+  const soundService = getAppContext('soundService');
 
   const startGame = () => {
     game.start();
@@ -35,6 +36,7 @@
         </span>
         <Tooltip>Score</Tooltip>
       </Wrapper>
+
       <Wrapper>
         <span class="food-score">
           <img src={scoreImage.src} alt={scoreImage.alt} />
@@ -43,35 +45,48 @@
         <Tooltip>Highscore</Tooltip>
       </Wrapper>
     </div>
-    {#if $gameState.status === 'playing'}
-      <Wrapper>
-        <IconButton class="material-icons" on:click={pauseGame}
-          >pause</IconButton
+    <div>
+      {#if $soundState.muted}
+        <IconButton
+          class="material-icons"
+          on:click={soundService.unmuteAllPlayers}>volume_off</IconButton
         >
-        <Tooltip>Pause</Tooltip>
-      </Wrapper>
-    {:else if $gameState.status === 'paused'}
-      <Wrapper>
-        <IconButton class="material-icons" on:click={endPause}
-          >play_arrow</IconButton
+      {:else}
+        <IconButton
+          class="material-icons"
+          on:click={soundService.muteAllPlayers}>volume_up</IconButton
         >
-        <Tooltip>Continue</Tooltip>
-      </Wrapper>
-    {:else if $gameState.status === 'stopped'}
-      <Wrapper>
-        <IconButton class="material-icons" on:click={restartGame}
-          >replay</IconButton
-        >
-        <Tooltip>Restart</Tooltip>
-      </Wrapper>
-    {:else if $gameState.status === 'initial'}
-      <Wrapper>
-        <IconButton class="material-icons" on:click={startGame}
-          >play_arrow</IconButton
-        >
-        <Tooltip>Start Game</Tooltip>
-      </Wrapper>
-    {/if}
+      {/if}
+      {#if $gameState.status === 'playing'}
+        <Wrapper>
+          <IconButton class="material-icons" on:click={pauseGame}
+            >pause</IconButton
+          >
+          <Tooltip>Pause</Tooltip>
+        </Wrapper>
+      {:else if $gameState.status === 'paused'}
+        <Wrapper>
+          <IconButton class="material-icons" on:click={endPause}
+            >play_arrow</IconButton
+          >
+          <Tooltip>Continue</Tooltip>
+        </Wrapper>
+      {:else if $gameState.status === 'stopped'}
+        <Wrapper>
+          <IconButton class="material-icons" on:click={restartGame}
+            >replay</IconButton
+          >
+          <Tooltip>Restart</Tooltip>
+        </Wrapper>
+      {:else if $gameState.status === 'initial'}
+        <Wrapper>
+          <IconButton class="material-icons" on:click={startGame}
+            >play_arrow</IconButton
+          >
+          <Tooltip>Start Game</Tooltip>
+        </Wrapper>
+      {/if}
+    </div>
   </div>
 {/if}
 
