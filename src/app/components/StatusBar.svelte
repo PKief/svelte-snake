@@ -58,33 +58,21 @@
         >
       {/if}
       {#if $gameState.status === 'playing'}
-        <Wrapper>
-          <IconButton class="material-icons" on:click={pauseGame}
-            >pause</IconButton
-          >
-          <Tooltip>Pause</Tooltip>
-        </Wrapper>
+        <IconButton class="material-icons" on:click={pauseGame}
+          >pause</IconButton
+        >
       {:else if $gameState.status === 'paused'}
-        <Wrapper>
-          <IconButton class="material-icons" on:click={endPause}
-            >play_arrow</IconButton
-          >
-          <Tooltip>Continue</Tooltip>
-        </Wrapper>
+        <IconButton class="material-icons" on:click={endPause}
+          >play_arrow</IconButton
+        >
       {:else if $gameState.status === 'stopped'}
-        <Wrapper>
-          <IconButton class="material-icons" on:click={restartGame}
-            >replay</IconButton
-          >
-          <Tooltip>Restart</Tooltip>
-        </Wrapper>
+        <IconButton class="material-icons" on:click={restartGame}
+          >replay</IconButton
+        >
       {:else if $gameState.status === 'initial'}
-        <Wrapper>
-          <IconButton class="material-icons" on:click={startGame}
-            >play_arrow</IconButton
-          >
-          <Tooltip>Start Game</Tooltip>
-        </Wrapper>
+        <IconButton class="material-icons" on:click={startGame}
+          >play_arrow</IconButton
+        >
       {/if}
     </div>
   </div>

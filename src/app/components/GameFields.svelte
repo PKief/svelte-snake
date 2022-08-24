@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { getAppContext } from '../core';
   import { GameRenderer } from '../rendering';
+  import { gameState } from '../stores';
   import { ContextPath2D } from './../types';
   const game = getAppContext('game');
 
@@ -35,10 +36,42 @@
   });
 </script>
 
-<canvas bind:this={canvas} width="500" height="500" />
+<canvas
+  class:shake={$gameState.gameOver}
+  bind:this={canvas}
+  width="500"
+  height="500"
+/>
 
 <style lang="scss">
   canvas {
     width: 100%;
+
+    &.shake {
+      animation: shake 0.1s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+  }
+
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 1px, 0);
+    }
+
+    20%,
+    80% {
+      transform: translate3d(2px, -2px, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 4px, 0);
+    }
+
+    40%,
+    60% {
+      transform: translate3d(4px, -4px, 0);
+    }
   }
 </style>
