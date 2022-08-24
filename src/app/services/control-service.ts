@@ -10,6 +10,7 @@ type SwipeEvent = {
 type SwipeDirection = 'top' | 'right' | 'bottom' | 'left';
 type KeyboardDirection = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 type KeyboardDirection2 = 'w' | 'a' | 's' | 'd';
+type SupportedKey = KeyboardDirection | KeyboardDirection2 | 'Enter';
 
 export class ControlService {
   private readonly game: Game;
@@ -36,9 +37,7 @@ export class ControlService {
     }
   }
 
-  private handleControlInput(
-    input: KeyboardDirection | KeyboardDirection2 | SwipeDirection
-  ) {
+  private handleControlInput(input: SupportedKey | SwipeDirection) {
     switch (input) {
       case 'ArrowUp':
       case 'w':
@@ -60,11 +59,21 @@ export class ControlService {
       case 'right':
         this.switchDirection('right');
         break;
+
+      case 'Enter':
+        this.restartGame();
+        break;
     }
   }
 
   private switchDirection(direction: Direction) {
     this.initiallyStartGame();
     this.game.snake.switchDirection(direction);
+  }
+
+  private restartGame() {
+    if (this.game.currentGameState.gameOver) {
+      this.game.restart();
+    }
   }
 }
