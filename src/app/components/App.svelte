@@ -2,9 +2,11 @@
   import '../../styles/styles.scss';
   import { provideServicesForContext, setAppContext } from '../core';
   import { Game } from '../logic/game';
+  import { gameState } from '../stores';
   import Controls from './Controls.svelte';
   import Footer from './Footer.svelte';
   import GameFields from './GameFields.svelte';
+  import GameOver from './GameOver.svelte';
   import StatusBar from './StatusBar.svelte';
 
   provideServicesForContext();
@@ -29,6 +31,9 @@
       <Controls>
         <GameFields />
       </Controls>
+      {#if $gameState.gameOver}
+        <GameOver />
+      {/if}
     </main>
     <Footer />
   </div>
@@ -66,7 +71,7 @@
 
   main {
     text-align: center;
-    box-shadow: 0px 4px 0px #66bb6a7d;
+    position: relative;
 
     @media (min-width: 640px) {
       max-width: none;

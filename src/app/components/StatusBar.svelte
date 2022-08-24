@@ -97,6 +97,8 @@
       gap: 10px;
       font-weight: 500;
       font-size: 1.25rem;
+      font-variant-numeric: diagonal-fractions;
+      font-family: monospace;
 
       & > img {
         width: 1.75rem;
