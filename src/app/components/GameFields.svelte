@@ -12,18 +12,23 @@
     const ctx = canvas.getContext('2d');
     const renderer = new GameRenderer(game, ctx as ContextPath2D);
 
-    const fpsInterval = 1;
-    let then = window.performance.now();
+    let fps = 30;
+    let now;
+    let then = Date.now();
+    let interval = 500 / fps;
+    let delta;
+
     const renderContext = renderer.getRenderingContext();
 
     const loop = (t) => {
       frame = requestAnimationFrame(loop);
 
-      const elapsed = t - then;
+      now = Date.now();
+      delta = now - then;
 
       // if enough time has elapsed, draw the next frame
-      if (elapsed > fpsInterval) {
-        then = t - (elapsed % fpsInterval);
+      if (delta > interval) {
+        then = now - (delta % interval);
         renderContext();
       }
     };
