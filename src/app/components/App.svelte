@@ -52,7 +52,7 @@
     background-size: 400% 400%;
 
     .app-context {
-      max-width: 500px;
+      max-width: 400px;
       width: 100%;
     }
   }
@@ -63,7 +63,7 @@
       font-family: monospace;
       font-style: italic;
       font-size: 4rem;
-      padding: 2rem 0;
+      padding-bottom: 2rem;
       margin: 0;
       color: rgba(238, 238, 238, 0.75);
     }
