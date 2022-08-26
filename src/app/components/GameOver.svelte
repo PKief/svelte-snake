@@ -2,7 +2,7 @@
   import Button, { Label } from '@smui/button';
   import { Icon } from '@smui/common';
   import { getAppContext } from '../core';
-  import { gameState } from '../stores';
+  import { gameState, i18n } from '../stores';
 
   const game = getAppContext('game');
   const imageService = getAppContext('imageService');
@@ -33,7 +33,10 @@
         touch
         variant="raised"
       >
-        <Label><Icon class="material-icons me-3">play_arrow</Icon>Play</Label>
+        <Label
+          ><Icon class="material-icons me-2">play_arrow</Icon>
+          {$i18n('button.play')}
+        </Label>
       </Button>
     </div>
   </div>

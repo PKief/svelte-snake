@@ -1,22 +1,33 @@
+import { Translation } from 'src/i18n/translation';
+import { setAppContext } from '.';
 import {
   ControlService,
   ImageService,
   SoundService,
   StorageService,
+  TranslationService,
 } from '../services';
-import { setAppContext } from './context';
 
-export const provideServicesForContext = () => {
+export const registerServices = () => {
+  const soundService = new SoundService();
+  const storageService = new StorageService();
+  const controlService = new ControlService();
+  const imageService = new ImageService();
+  const translationService = new TranslationService<Translation>();
+
   setAppContext('soundService', {
-    getSoundService: () => new SoundService(),
+    getSoundService: () => soundService,
   });
   setAppContext('storageService', {
-    getStorageService: () => new StorageService(),
+    getStorageService: () => storageService,
   });
   setAppContext('controlService', {
-    getControlService: () => new ControlService(),
+    getControlService: () => controlService,
   });
   setAppContext('imageService', {
-    getImageService: () => new ImageService(),
+    getImageService: () => imageService,
+  });
+  setAppContext('translationService', {
+    getTranslationService: () => translationService,
   });
 };

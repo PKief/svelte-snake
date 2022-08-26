@@ -2,7 +2,7 @@
   import IconButton from '@smui/icon-button';
   import Tooltip, { Wrapper } from '@smui/tooltip';
   import { getAppContext } from '../core';
-  import { gameState, soundState } from '../stores';
+  import { gameState, i18n, soundState } from '../stores';
 
   const game = getAppContext('game');
   const imageService = getAppContext('imageService');
@@ -34,7 +34,7 @@
           <img src={game.food.image.src} alt={game.food.image.alt} />
           {$gameState.score}
         </span>
-        <Tooltip>Score</Tooltip>
+        <Tooltip>{$i18n('label.score')}</Tooltip>
       </Wrapper>
 
       <Wrapper>
@@ -42,7 +42,7 @@
           <img src={scoreImage.src} alt={scoreImage.alt} />
           {$gameState.highScore}
         </span>
-        <Tooltip>Highscore</Tooltip>
+        <Tooltip>{$i18n('label.highScore')}</Tooltip>
       </Wrapper>
     </div>
     <div>

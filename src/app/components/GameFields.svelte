@@ -3,7 +3,7 @@
   import { getAppContext } from '../core';
   import { GameRenderer } from '../rendering';
   import { gameState } from '../stores';
-  import { ContextPath2D } from './../types';
+  import { ContextPath2D } from '../types';
   const game = getAppContext('game');
 
   let canvas: HTMLCanvasElement;

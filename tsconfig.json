@@ -3,6 +3,7 @@
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
   "compilerOptions": {
     "moduleResolution": "node",
+    "module": "ES2022",
     "target": "es2017",
     "importsNotUsedAsValues": "remove",
     "isolatedModules": true,

@@ -1,4 +1,3 @@
-import { getAppContext } from '../core';
 import { Game } from '../logic/game';
 import { Direction } from '../types';
 
@@ -13,10 +12,10 @@ type KeyboardDirection2 = 'w' | 'a' | 's' | 'd';
 type SupportedKey = KeyboardDirection | KeyboardDirection2 | 'Enter';
 
 export class ControlService {
-  private readonly game: Game;
+  private game?: Game;
 
-  constructor() {
-    this.game = getAppContext('game');
+  init(game: Game) {
+    this.game = game;
   }
 
   handleKeydown() {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import '../../styles/styles.scss';
-  import { provideServicesForContext, setAppContext } from '../core';
+  import { getAppContext, setAppContext } from '../core';
+  import { registerServices } from '../core/services';
   import { Game } from '../logic/game';
   import { gameState } from '../stores';
   import Controls from './Controls.svelte';
@@ -9,7 +10,9 @@
   import GameOver from './GameOver.svelte';
   import StatusBar from './StatusBar.svelte';
 
-  provideServicesForContext();
+  registerServices();
+
+  const translationInit$ = getAppContext('translationService').init();
 
   const gridSize = 10;
   const speed = 15;
@@ -18,26 +21,31 @@
     gridSize,
     speed,
   });
+
+  getAppContext('controlService').init(game);
+
   setAppContext('game', { getGame: () => game });
 </script>
 
-<div class="app-container">
-  <div class="app-context">
-    <header>
-      <h1 class="title">Snake</h1>
-    </header>
-    <main>
-      <StatusBar />
-      <Controls>
-        <GameFields />
-      </Controls>
-      {#if $gameState.gameOver}
-        <GameOver />
-      {/if}
-    </main>
-    <Footer />
+{#await translationInit$ then}
+  <div class="app-container">
+    <div class="app-context">
+      <header>
+        <h1 class="title">Snake</h1>
+      </header>
+      <main>
+        <StatusBar />
+        <Controls>
+          <GameFields />
+        </Controls>
+        {#if $gameState.gameOver}
+          <GameOver />
+        {/if}
+      </main>
+      <Footer />
+    </div>
   </div>
-</div>
+{/await}
 
 <style lang="scss">
   .app-container {

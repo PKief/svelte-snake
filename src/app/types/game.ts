@@ -5,14 +5,6 @@ export type GameConfig = {
   speed: number;
 };
 
-export type GameState = {
-  fields: GameField[][];
-  score: number;
-  highScore: number;
-  gameOver: boolean;
-  status: 'playing' | 'stopped' | 'paused' | 'initial';
-};
-
 export type GameField = {
   id: string;
   type: GameFieldType;
@@ -34,8 +26,4 @@ export type ContextPath2D = CanvasRenderingContext2D & {
     h: number,
     radii: number[]
   ) => void;
-};
-
-export type SoundState = {
-  muted: boolean;
 };
