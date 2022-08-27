@@ -38,7 +38,9 @@
         <StatusBar />
         <Controls>
           <GameFields />
-          <Explanation isVisible={$gameState.status === 'initial'} />
+          {#if $gameState.status === 'initial'}
+            <Explanation />
+          {/if}
         </Controls>
         {#if $gameState.gameOver}
           <GameOver />
