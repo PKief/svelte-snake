@@ -19,5 +19,9 @@
   .controls {
     padding: 1rem;
     background-color: #66bb6ade;
+    position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: end;
   }
 </style>

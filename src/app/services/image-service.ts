@@ -1,4 +1,8 @@
-type ImageName = 'apple' | 'trophy';
+type ImageName =
+  | 'apple'
+  | 'trophy'
+  | 'explanation-keyboard'
+  | 'explanation-gestures';
 
 type ImageData = {
   path: string;
@@ -16,6 +20,14 @@ export class ImageService {
     this.imageRegistry.set('trophy', {
       path: 'trophy_color.svg',
       altText: 'Trophy icon',
+    });
+    this.imageRegistry.set('explanation-keyboard', {
+      path: 'explanation-keyboard.svg',
+      altText: 'Explanation Keyboard',
+    });
+    this.imageRegistry.set('explanation-gestures', {
+      path: 'explanation-gestures.svg',
+      altText: 'Explanation Gestures',
     });
   }
 

@@ -5,6 +5,7 @@
   import { Game } from '../logic/game';
   import { gameState } from '../stores';
   import Controls from './Controls.svelte';
+  import Explanation from './Explanation.svelte';
   import Footer from './Footer.svelte';
   import GameFields from './GameFields.svelte';
   import GameOver from './GameOver.svelte';
@@ -37,6 +38,7 @@
         <StatusBar />
         <Controls>
           <GameFields />
+          <Explanation isVisible={$gameState.status === 'initial'} />
         </Controls>
         {#if $gameState.gameOver}
           <GameOver />
